@@ -1,0 +1,45 @@
+﻿@model proyecto_programacion_avanzada.DTOs.UsuarioDto
+
+@{
+    ViewBag.Title = "Editar Usuario";
+}
+
+<h2>Editar Usuario</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.IdUsuario)
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Nombre)
+        @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Correo)
+        @Html.TextBoxFor(x => x.Correo, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Telefono)
+        @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Rol)
+        @Html.EditorFor(x => x.Rol)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Estado)
+        @Html.EditorFor(x => x.Estado)
+    </div>
+
+    <br />
+
+    <button class="btn btn-primary">
+        Actualizar
+    </button>
+}
