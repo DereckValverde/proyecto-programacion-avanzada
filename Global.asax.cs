@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using proyecto_programacion_avanzada.Mappings;
 
 namespace proyecto_programacion_avanzada
 {
@@ -13,9 +14,13 @@ namespace proyecto_programacion_avanzada
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Inicializa AutoMapper
+            AutoMapperConfig.RegisterMappings();
         }
     }
 }
