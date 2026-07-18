@@ -20,7 +20,18 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
 
         public void Actualizar(Usuario usuario)
         {
-            _context.Entry(usuario).State = System.Data.Entity.EntityState.Modified;
+            var usuarioExistente = _context.Usuarios.Find(usuario.IdUsuario);
+
+            if(usuarioExistente == null)
+            {
+                return;
+            }
+
+            usuarioExistente.Nombre = usuario.Nombre;
+            usuarioExistente.Correo = usuario.Correo;
+            usuarioExistente.Telefono = usuario.Telefono;
+            usuarioExistente.Rol = usuario.Rol;
+            usuarioExistente.Estado = usuario.Estado;
         }
 
         public void Agregar(Usuario usuario)
@@ -40,6 +51,7 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
 
         public void Guardar()
         {
+
             _context.SaveChanges();
         }
 
