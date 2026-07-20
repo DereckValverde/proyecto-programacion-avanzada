@@ -139,6 +139,7 @@
     <Compile Include="Common\Enums\TipoVisitante.cs" />
     <Compile Include="Common\Enums\TipoVivienda.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ResidenteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\ViviendaController.cs" />
     <Compile Include="DTOs\AreaComunDto.cs" />
@@ -161,8 +162,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\DbContexts\CondominioContext.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementations\ResidenteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\UsuarioRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\ViviendaRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Interfaces\IResidenteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IUsuarioRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IViviendaRepository.cs" />
     <Compile Include="Mappings\AutoMapperConfig.cs" />
@@ -173,10 +176,16 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Implementations\ResidenteService.cs" />
     <Compile Include="Services\Implementations\UsuarioService.cs" />
     <Compile Include="Services\Implementations\ViviendaService.cs" />
+    <Compile Include="Services\Interfaces\IResidenteService.cs" />
     <Compile Include="Services\Interfaces\IUsuarioService.cs" />
     <Compile Include="Services\Interfaces\IViviendaService.cs" />
+    <Compile Include="ViewModels\Residente\ResidenteCreateViewModel.cs" />
+    <Compile Include="ViewModels\Residente\ResidenteDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Residente\ResidenteEditViewModel.cs" />
+    <Compile Include="ViewModels\Residente\ResidenteListViewModel.cs" />
     <Compile Include="ViewModels\Usuario\UsuarioCreateViewModel.cs" />
     <Compile Include="ViewModels\Usuario\UsuarioDetailsViewModel.cs" />
     <Compile Include="ViewModels\Usuario\UsuarioEditViewModel.cs" />
@@ -247,6 +256,11 @@
     <Content Include="Views\Vivienda\Details.cshtml" />
     <Content Include="Views\Vivienda\Delete.cshtml" />
     <Content Include="Views\Vivienda\Create.cshtml" />
+    <Content Include="Views\Residente\Create.cshtml" />
+    <Content Include="Views\Residente\Edit.cshtml" />
+    <Content Include="Views\Residente\Index.cshtml" />
+    <Content Include="Views\Residente\Details.cshtml" />
+    <Content Include="Views\Residente\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

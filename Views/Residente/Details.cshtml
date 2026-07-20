@@ -1,0 +1,36 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Residente.ResidenteDetailsViewModel
+
+@{
+    ViewBag.Title = "Detalle del Residente";
+}
+
+<h2>Detalle del Residente</h2>
+
+<div>
+    <hr />
+
+    <dl class="dl-horizontal">
+
+        <dt>Nombre</dt>
+        <dd>@Model.Nombre</dd>
+
+        <dt>Fecha de Ingreso</dt>
+        <dd>@Model.FechaIngreso.ToShortDateString()</dd>
+
+        <dt>Estado</dt>
+        <dd>@Model.Estado</dd>
+
+        <dt>Usuario</dt>
+        <dd>@Model.IdUsuario</dd>
+
+        <dt>Vivienda</dt>
+        <dd>@Model.IdVivienda</dd>
+
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.IdResidente }, new { @class = "btn btn-warning" })
+
+    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
+</p>

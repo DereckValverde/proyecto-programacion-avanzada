@@ -1,0 +1,51 @@
+﻿@model IEnumerable<proyecto_programacion_avanzada.ViewModels.Residente.ResidenteListViewModel>
+
+@{
+    ViewBag.Title = "Residentes";
+}
+
+<h2>Residentes</h2>
+
+<p>
+    @Html.ActionLink("Crear Residente", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Ingreso</th>
+        <th>Estado</th>
+        <th>Usuario</th>
+        <th>Vivienda</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>@item.Nombre</td>
+
+            <td>@item.FechaIngreso.ToShortDateString()</td>
+
+            <td>@item.Estado</td>
+
+            <td>@item.IdUsuario</td>
+
+            <td>@item.IdVivienda</td>
+
+            <td>
+
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdResidente }, new { @class = "btn btn-warning btn-sm" })
+
+                @Html.ActionLink("Detalles", "Details", new { id = item.IdResidente }, new { @class = "btn btn-info btn-sm" })
+
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdResidente }, new { @class = "btn btn-danger btn-sm" })
+
+            </td>
+
+        </tr>
+    }
+
+</table>
