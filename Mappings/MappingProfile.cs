@@ -2,6 +2,8 @@
 using proyecto_programacion_avanzada.DTOs;
 using proyecto_programacion_avanzada.Entities;
 using proyecto_programacion_avanzada.ViewModels;
+using proyecto_programacion_avanzada.ViewModels.Usuario;
+using proyecto_programacion_avanzada.ViewModels.Vivienda;
 
 namespace proyecto_programacion_avanzada.Mappings
 {
@@ -15,6 +17,12 @@ namespace proyecto_programacion_avanzada.Mappings
             CreateMap<UsuarioDto, UsuarioEditViewModel>().ReverseMap();
             CreateMap<UsuarioDto, UsuarioListViewModel>().ReverseMap();
             CreateMap<UsuarioDto, UsuarioDetailsViewModel>().ReverseMap();
+
+            CreateMap<ViviendaDto, ViviendaCreateViewModel>().ReverseMap();
+            CreateMap<ViviendaDto, ViviendaEditViewModel>().ReverseMap();
+            CreateMap<ViviendaDto, ViviendaListViewModel>().ReverseMap();
+            CreateMap<ViviendaDto, ViviendaDetailsViewModel>().ReverseMap();
+
             CreateMap<Residente, ResidenteDto>().ReverseMap();
             CreateMap<Vivienda, ViviendaDto>().ReverseMap();
             CreateMap<Pago, PagoDto>().ReverseMap();

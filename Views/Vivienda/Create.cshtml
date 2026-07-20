@@ -1,0 +1,60 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Vivienda.ViviendaCreateViewModel
+@using proyecto_programacion_avanzada.Common.Enums
+
+@{
+    ViewBag.Title = "Crear Vivienda";
+}
+
+<h2>Crear Vivienda</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Bloque)
+        @Html.TextBoxFor(x => x.Bloque, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Bloque, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Numero)
+        @Html.TextBoxFor(x => x.Numero, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Numero, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Tipo)
+
+        @Html.DropDownListFor(
+            x => x.Tipo,
+            new SelectList(Enum.GetValues(typeof(TipoVivienda))),
+            "Seleccione un Tipo",
+            new { @class = "form-control" }
+        )
+
+        @Html.ValidationMessageFor(x => x.Tipo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Estado)
+
+        @Html.DropDownListFor(
+            x => x.Estado,
+            new SelectList(Enum.GetValues(typeof(EstadoGeneral))),
+            "Seleccione un estado",
+            new { @class = "form-control" }
+        )
+
+        @Html.ValidationMessageFor(x => x.Estado, "", new { @class = "text-danger" })
+    </div>
+
+    <br />
+
+    <button class="btn btn-success">
+        Guardar
+    </button>
+
+    @Html.ActionLink("Volver", "Index", null,
+    new { @class = "btn btn-secondary" })
+}

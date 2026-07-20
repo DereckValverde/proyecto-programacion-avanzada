@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace proyecto_programacion_avanzada.ViewModels
+namespace proyecto_programacion_avanzada.ViewModels.Usuario
 {
     public class UsuarioDetailsViewModel
     {

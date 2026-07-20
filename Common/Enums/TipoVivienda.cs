@@ -3,6 +3,6 @@
     public enum TipoVivienda
     {
         Casa = 1,
-        Apartamento = 2
+        Lote = 2
     }
 }

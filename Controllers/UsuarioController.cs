@@ -2,13 +2,10 @@
 using proyecto_programacion_avanzada.Infrastructure.DbContexts;
 using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
 using proyecto_programacion_avanzada.Services.Implementations;
-using AutoMapper;
-using proyecto_programacion_avanzada.ViewModels;
 using System.Web.Mvc;
 using proyecto_programacion_avanzada.Mappings;
 using System.Collections.Generic;
-using System.Web.Management;
-using System.Data.SqlTypes;
+using proyecto_programacion_avanzada.ViewModels.Usuario;
 
 namespace proyecto_programacion_avanzada.Controllers
 {
