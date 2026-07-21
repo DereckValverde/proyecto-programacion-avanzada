@@ -3,28 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using proyecto_programacion_avanzada.Common.Enums;
+
 
 namespace proyecto_programacion_avanzada.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
+            if (User.IsInRole(RolUsuario.Administrador.ToString()))
+            {
+                return RedirectToAction(nameof(AdminDashboard));
+            }
+
+            if (User.IsInRole(RolUsuario.Residente.ToString()))
+            {
+                return RedirectToAction(nameof(ResidenteDashboard));
+            }
+
+            if (User.IsInRole(RolUsuario.Guarda.ToString()))
+            {
+                return RedirectToAction(nameof(GuardaDashboard));
+            }
+
             return View();
         }
 
-        public ActionResult About()
+        [Authorize(Roles = "Administrador")]
+        public ActionResult AdminDashboard()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        [Authorize(Roles = "Residente")]
+        public ActionResult ResidenteDashboard()
         {
-            ViewBag.Message = "Your contact page.";
+            return View();
+        }
 
+        [Authorize(Roles = "Guarda")]
+        public ActionResult GuardaDashboard()
+        {
             return View();
         }
     }
 }
+

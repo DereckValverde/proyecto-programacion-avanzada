@@ -1,36 +1,82 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Condominio</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            @Html.ActionLink("Condominio", "Index", "Home", null, new { @class = "navbar-brand" })
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menuPrincipal">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav mr-auto">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Residentes", "Index", "Residentes", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Viviendas", "Index", "Viviendas", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Pagos", "Index", "Pagos", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Áreas comunes", "Index", "AreasComunes", null, new { @class = "nav-link" })</li>
+                        }
+                        else if (User.IsInRole("Residente"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Mis pagos", "Index", "Pagos", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Historial de visitas", "Index", "Visitantes", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Reservar área común", "Index", "Reservas", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Reportar incidencia", "Crear", "Incidencias", null, new { @class = "nav-link" })</li>
+                        }
+                        else if (User.IsInRole("Guarda"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Registrar ingreso", "Crear", "Visitantes", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Historial de visitas", "Index", "Visitantes", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Registrar incidencia", "Crear", "Incidencias", null, new { @class = "nav-link" })</li>
+                        }
+                    }
                 </ul>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <span class="navbar-text text-white mr-3">
+                                Hola, @(Session["NombreUsuario"] ?? User.Identity.Name)
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a>
+                            }
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">@Html.ActionLink("Iniciar sesión", "Login", "Account", null, new { @class = "nav-link" })</li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>
-    <div class="container body-content">
+
+    <div class="container">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
+
+    <footer class="text-center text-muted mt-4 mb-3">
+        <p>&copy; @DateTime.Now.Year - Sistema de Gestión de Condominios</p>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

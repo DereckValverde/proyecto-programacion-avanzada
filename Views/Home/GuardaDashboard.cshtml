@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Panel de Casetilla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            Panel de Casetilla
+        </div>
+        <div class="card-body">
+            <p>Bienvenido/a, @(Session["NombreUsuario"] ?? User.Identity.Name).</p>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    @Html.ActionLink("Registrar ingreso de visitante", "Crear", "Visitantes", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+                <div class="col-md-4 mb-3">
+                    @Html.ActionLink("Historial de visitas", "Index", "Visitantes", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+                <div class="col-md-4 mb-3">
+                    @Html.ActionLink("Registrar incidencia", "Crear", "Incidencias", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

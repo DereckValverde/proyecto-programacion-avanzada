@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Panel de Administración";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            Panel de Administración
+        </div>
+        <div class="card-body">
+            <p>Bienvenido/a, @(Session["NombreUsuario"] ?? User.Identity.Name).</p>
+
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    @Html.ActionLink("Residentes", "Index", "Residentes", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+                <div class="col-md-3 mb-3">
+                    @Html.ActionLink("Viviendas", "Index", "Viviendas", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+                <div class="col-md-3 mb-3">
+                    @Html.ActionLink("Pagos", "Index", "Pagos", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+                <div class="col-md-3 mb-3">
+                    @Html.ActionLink("Áreas comunes", "Index", "AreasComunes", null, new { @class = "btn btn-primary btn-block" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
