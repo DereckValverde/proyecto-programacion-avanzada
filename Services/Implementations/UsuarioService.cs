@@ -27,12 +27,14 @@ namespace proyecto_programacion_avanzada.Services.Implementations
             _usuarioRepository.Guardar();
         }
 
-        public void Agregar(UsuarioDto usuarioDto)
+        public UsuarioDto Agregar(UsuarioDto usuarioDto)
         {
             var usuario = AutoMapperConfig.Mapper.Map<Usuario>(usuarioDto);
 
             _usuarioRepository.Agregar(usuario);
             _usuarioRepository.Guardar();
+
+            return AutoMapperConfig.Mapper.Map<UsuarioDto>(usuario);
         }
 
         public void Eliminar(int id)

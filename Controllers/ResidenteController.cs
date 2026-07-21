@@ -7,6 +7,7 @@ using proyecto_programacion_avanzada.Services.Implementations;
 using proyecto_programacion_avanzada.ViewModels;
 using proyecto_programacion_avanzada.ViewModels.Residente;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace proyecto_programacion_avanzada.Controllers
@@ -38,11 +39,14 @@ namespace proyecto_programacion_avanzada.Controllers
                 "Correo"
             );
 
-            ViewBag.Viviendas = new SelectList(
-                _viviendaService.obtenerTodos(),
-                "IdVivienda",
-                "Numero"
-            );
+            ViewBag.Viviendas = _viviendaService
+                .obtenerTodos()
+                .Select(v => new SelectListItem
+                {
+                    Value = v.IdVivienda.ToString(),
+                    Text = "Bloque " + v.Bloque + " - Vivienda " + v.Numero
+                })
+                .ToList();
         }
 
         // GET: Residente
@@ -56,6 +60,7 @@ namespace proyecto_programacion_avanzada.Controllers
         }
 
         // GET: Residente/Details/5
+
         public ActionResult Details(int id)
         {
             var residenteDto = _residenteService.ObtenerPorId(id);
@@ -117,14 +122,33 @@ namespace proyecto_programacion_avanzada.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = AutoMapperConfig.Mapper.Map<ResidenteDto>(model);
+                var residenteDto = new ResidenteDto
+                {
+                    IdResidente = model.IdResidente,
+                    Nombre = model.Nombre,
+                    FechaIngreso = model.FechaIngreso,
+                    Estado = model.Estado,
+                    IdUsuario = model.IdUsuario,
+                    IdVivienda = model.IdVivienda
+                };
 
-                _residenteService.Actualizar(dto);
+
+                _residenteService.Actualizar(residenteDto);
+
+
+                var usuario = _usuarioService.ObtenerPorId(model.IdUsuario);
+
+                if (usuario != null)
+                {
+                    usuario.Nombre = model.Nombre;
+                    usuario.Estado = model.Estado;
+
+                    _usuarioService.Actualizar(usuario);
+                }
+
 
                 return RedirectToAction("Index");
             }
-
-            CargarCombos();
 
             return View(model);
         }

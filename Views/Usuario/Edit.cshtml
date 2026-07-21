@@ -58,9 +58,80 @@
         @Html.ValidationMessageFor(x => x.Estado, "", new { @class = "text-danger" })
     </div>
 
+    <div id="panelResidente" style="display:none;">
+
+        <hr />
+
+        <h4>Información del Residente</h4>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.FechaIngreso)
+
+            @Html.TextBoxFor(x => x.FechaIngreso,
+                "{0:yyyy-MM-dd}",
+                new
+                {
+                    @class = "form-control",
+                    type = "date"
+                })
+
+            @Html.ValidationMessageFor(x => x.FechaIngreso, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+
+            @Html.Label("Vivienda")
+
+            @Html.DropDownListFor(
+                x => x.IdVivienda,
+                Model.Viviendas,
+                "Seleccione una vivienda",
+                new { @class = "form-control" }
+            )
+
+        </div>
+
+    </div>
+
     <br />
 
     <button class="btn btn-primary">
         Actualizar
     </button>
+}
+
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            function mostrarPanelResidente() {
+
+                var rol = $("#Rol option:selected").text();
+
+                if (rol === "Residente") {
+
+                    $("#panelResidente").slideDown();
+
+                }
+                else {
+
+                    $("#panelResidente").slideUp();
+
+                }
+
+            }
+
+            mostrarPanelResidente();
+
+            $("#Rol").change(function () {
+
+                mostrarPanelResidente();
+
+            });
+
+        });
+
+    </script>
 }

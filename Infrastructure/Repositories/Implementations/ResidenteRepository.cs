@@ -17,6 +17,11 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
         {
             _context = context;
         }
+        public Residente ObtenerPorIdUsuario(int idUsuario)
+        {
+            return _context.Residentes
+                .FirstOrDefault(r => r.IdUsuario == idUsuario);
+        }
 
         public void Actualizar(Residente residente)
         {

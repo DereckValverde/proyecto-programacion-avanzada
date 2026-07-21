@@ -13,6 +13,8 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Interfaces
 
         Residente ObtenerPorId(int id);
 
+        Residente ObtenerPorIdUsuario(int idUsuario);
+
         void Agregar(Residente residente);
 
         void Actualizar(Residente residente);

@@ -1,6 +1,7 @@
 ﻿using proyecto_programacion_avanzada.DTOs;
 using proyecto_programacion_avanzada.Infrastructure.DbContexts;
 using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
+using proyecto_programacion_avanzada.Infrastructure.Repositories.Interfaces;
 using proyecto_programacion_avanzada.Mappings;
 using proyecto_programacion_avanzada.Services.Implementations;
 using proyecto_programacion_avanzada.Services.Interfaces;
@@ -19,14 +20,17 @@ namespace proyecto_programacion_avanzada.Controllers
     {
 
         private readonly ViviendaService _viviendaService;
+        private readonly IResidenteRepository _residenteRepository;
 
         public ViviendaController()
         {
             var context = new CondominioContext();
 
-            var repository = new ViviendaRepository(context);
+            var viviendaRepository = new ViviendaRepository(context);
+            var residenteRepository = new ResidenteRepository(context);
 
-            _viviendaService = new ViviendaService(repository);
+            _viviendaService = new ViviendaService(viviendaRepository);
+            _residenteRepository = residenteRepository;
         }
 
         public ActionResult Index()
@@ -122,10 +126,22 @@ namespace proyecto_programacion_avanzada.Controllers
         }
 
         //Post: Vivienda/Delete/n
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var tieneResidentes = _residenteRepository
+                .ObtenerTodos()
+                .Any(r => r.IdVivienda == id);
+
+
+            if (tieneResidentes)
+            {
+                TempData["Error"] = "No se puede eliminar la vivienda porque tiene residentes asociados.";
+                return RedirectToAction("Index");
+            }
+
+
             _viviendaService.Eliminar(id);
 
             return RedirectToAction("Index");

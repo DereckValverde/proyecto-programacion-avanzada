@@ -1,5 +1,4 @@
 ﻿@model proyecto_programacion_avanzada.ViewModels.Residente.ResidenteCreateViewModel
-
 @using proyecto_programacion_avanzada.Common.Enums
 
 @{
@@ -13,65 +12,75 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-
         <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.Nombre)
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.Nombre, new { @class = "form-label d-block" })
             @Html.EditorFor(m => m.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(m => m.Nombre)
+            @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.FechaIngreso)
-            @Html.TextBoxFor(m => m.FechaIngreso, "{0:yyyy-MM-dd}",
-                new { @class = "form-control", type = "date" })
-            @Html.ValidationMessageFor(m => m.FechaIngreso)
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.FechaIngreso, new { @class = "form-label d-block" })
+            @Html.TextBoxFor(m => m.FechaIngreso, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            @Html.ValidationMessageFor(m => m.FechaIngreso, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.Estado)
-
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.Estado, new { @class = "form-label d-block" })
             @Html.DropDownListFor(
                 m => m.Estado,
                 new SelectList(Enum.GetValues(typeof(EstadoGeneral))),
                 "Seleccione un estado",
-                new { @class = "form-control" })
-
-            @Html.ValidationMessageFor(m => m.Estado)
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.Estado, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            <label>Usuario</label>
-
+        <div class="form-group mb-3">
+            @Html.LabelFor(x => x.IdUsuario, "Usuario (Correo)", new { @class = "form-label d-block" })
             @Html.DropDownListFor(
-                m => m.IdUsuario,
-                (SelectList)ViewBag.Usuarios,
-                "Seleccione un usuario",
-                new { @class = "form-control" })
-
-            @Html.ValidationMessageFor(m => m.IdUsuario)
+                x => x.IdUsuario,
+                ViewBag.Usuarios as SelectList,
+                "Seleccione un correo...",
+                new { @class = "form-select select2-usuario" }
+            )
+            @Html.ValidationMessageFor(x => x.IdUsuario, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            <label>Vivienda</label>
-
+        <div class="form-group mb-3">
+            <label class="form-label d-block">Vivienda</label>
             @Html.DropDownListFor(
                 m => m.IdVivienda,
                 (SelectList)ViewBag.Viviendas,
                 "Seleccione una vivienda",
-                new { @class = "form-control" })
-
-            @Html.ValidationMessageFor(m => m.IdVivienda)
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
         </div>
 
-        <br />
-
-        <input type="submit" value="Guardar" class="btn btn-primary" />
-
-        @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
-
+        <div class="mt-4">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.select2-usuario').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Seleccione un correo...',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
 }

@@ -14,7 +14,7 @@ namespace proyecto_programacion_avanzada.Services.Interfaces
 
         UsuarioDto ObtenerPorId(int id);
 
-        void Agregar(UsuarioDto usuarioDto);
+        UsuarioDto Agregar(UsuarioDto usuarioDto);
 
         void Actualizar(UsuarioDto usuarioDto);
 

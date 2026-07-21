@@ -22,6 +22,6 @@ namespace proyecto_programacion_avanzada.ViewModels.Residente
 
         public string NombreUsuario { get; set; }
 
-        public string NombreVivienda { get; set; }
+        public string Vivienda { get; set; }
     }
 }

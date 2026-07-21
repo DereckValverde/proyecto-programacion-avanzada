@@ -62,7 +62,7 @@
 
             @Html.DropDownListFor(
                 m => m.IdVivienda,
-                (SelectList)ViewBag.Viviendas,
+                (IEnumerable<SelectListItem>)ViewBag.Viviendas,
                 "Seleccione una vivienda",
                 new { @class = "form-control" })
 

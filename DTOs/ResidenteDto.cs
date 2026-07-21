@@ -21,5 +21,9 @@ namespace proyecto_programacion_avanzada.DTOs
         public int IdUsuario { get; set; }
 
         public int IdVivienda { get; set; }
+
+        public string NombreUsuario { get; set; }
+
+        public string NombreVivienda { get; set; }
     }
 }
