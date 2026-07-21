@@ -171,7 +171,16 @@ namespace proyecto_programacion_avanzada.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var residente = _residenteService.ObtenerPorId(id);
+
+            if (residente == null)
+            {
+                return HttpNotFound();
+            }
+
             _residenteService.Eliminar(id);
+
+            _usuarioService.Eliminar(residente.IdUsuario);
 
             return RedirectToAction("Index");
         }

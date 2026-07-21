@@ -20,17 +20,12 @@
         <dt>Estado</dt>
         <dd>@Model.Estado</dd>
 
-        <dt>Usuario</dt>
-        <dd>@Model.IdUsuario</dd>
-
         <dt>Vivienda</dt>
-        <dd>@Model.IdVivienda</dd>
+        <dd>@Model.NombreVivienda</dd>
 
     </dl>
 </div>
 
 <p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.IdResidente }, new { @class = "btn btn-warning" })
-
     @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
 </p>

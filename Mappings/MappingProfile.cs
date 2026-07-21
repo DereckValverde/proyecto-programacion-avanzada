@@ -83,7 +83,10 @@ namespace proyecto_programacion_avanzada.Mappings
                     opt => opt.MapFrom(src => src.NombreVivienda));
 
             CreateMap<ResidenteDto, ResidenteDetailsViewModel>()
-                .ReverseMap();
+                .ForMember(dest => dest.NombreUsuario,
+                opt => opt.MapFrom(src => src.NombreUsuario))
+                .ForMember(dest => dest.NombreVivienda,
+                opt => opt.MapFrom(src => src.NombreVivienda));
 
 
             CreateMap<Pago, PagoDto>()
