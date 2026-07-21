@@ -1,0 +1,21 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Vivienda.ViviendaDetailsViewModel
+
+<h2>Eliminar Vivienda</h2>
+
+<h4>
+    ¿Desea eliminar la vivienda Bloque: @Model.Bloque - Número: @Model.Numero
+</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.IdVivienda)
+
+    <button class="btn btn-danger">
+        Eliminar
+    </button>
+
+    @Html.ActionLink("Cancelar", "Index", null,
+    new { @class = "btn btn-secondary" })
+}

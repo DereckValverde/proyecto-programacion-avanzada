@@ -1,0 +1,28 @@
+﻿﻿@model proyecto_programacion_avanzada.ViewModels.Vivienda.ViviendaDetailsViewModel
+
+<h2>Detalles Vivienda</h2>
+
+<div>
+    <strong>Número:</strong>
+    @Model.Numero
+</div>
+
+<div>
+    <strong>Bloque:</strong>
+    @Model.Bloque
+</div>
+
+<div>
+    <strong>Tipo:</strong>
+    @Model.Tipo
+</div>
+
+<div>
+    <strong>Estado:</strong>
+    @Model.Estado
+</div>
+
+<br />
+
+@Html.ActionLink("Volver", "Index", null,
+new { @class = "btn btn-secondary" })

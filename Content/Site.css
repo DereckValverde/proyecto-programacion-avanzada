@@ -12,9 +12,13 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+/* Regla unificada para campos de formulario y Select2 */
+.form-group .form-control,
+.form-group .form-select,
+.form-group select,
+.form-group input,
+.form-group .select2-container,
+span.select2-container--bootstrap-5 {
+    max-width: 350px !important;
+    width: 100% !important;
 }

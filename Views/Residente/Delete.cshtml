@@ -1,0 +1,43 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Residente.ResidenteDetailsViewModel
+
+@{
+    ViewBag.Title = "Eliminar Residente";
+}
+
+<h2>Eliminar Residente</h2>
+
+<h4>¿Está seguro de que desea eliminar este residente?</h4>
+
+<hr />
+
+<dl class="dl-horizontal">
+
+    <dt>Nombre</dt>
+    <dd>@Model.Nombre</dd>
+
+    <dt>Fecha de Ingreso</dt>
+    <dd>@Model.FechaIngreso.ToShortDateString()</dd>
+
+    <dt>Estado</dt>
+    <dd>@Model.Estado</dd>
+
+    <dt>Usuario</dt>
+    <dd>@Model.NombreUsuario</dd>
+
+    <dt>Vivienda</dt>
+    <dd>@Model.NombreVivienda</dd>
+
+</dl>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions">
+
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
+
+        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary" })
+
+    </div>
+}

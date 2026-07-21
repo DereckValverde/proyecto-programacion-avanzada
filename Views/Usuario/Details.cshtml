@@ -1,0 +1,33 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Usuario.UsuarioDetailsViewModel
+
+<h2>Detalles Usuario</h2>
+
+<div>
+    <strong>Nombre:</strong>
+    @Model.Nombre
+</div>
+
+<div>
+    <strong>Correo:</strong>
+    @Model.Correo
+</div>
+
+<div>
+    <strong>Teléfono:</strong>
+    @Model.Telefono
+</div>
+
+<div>
+    <strong>Rol:</strong>
+    @Model.Rol
+</div>
+
+<div>
+    <strong>Estado:</strong>
+    @Model.Estado
+</div>
+
+<br />
+
+@Html.ActionLink("Volver", "Index", null,
+new { @class = "btn btn-secondary" })

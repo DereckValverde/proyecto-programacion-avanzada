@@ -1,0 +1,137 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Usuario.UsuarioEditViewModel
+@using proyecto_programacion_avanzada.Common.Enums
+
+
+@{
+    ViewBag.Title = "Editar Usuario";
+}
+
+<h2>Editar Usuario</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(x => x.IdUsuario)
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Nombre)
+        @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Nombre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Correo)
+        @Html.TextBoxFor(x => x.Correo, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Correo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Telefono)
+        @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Rol)
+
+        @Html.DropDownListFor(
+            x => x.Rol,
+            new SelectList(Enum.GetValues(typeof(RolUsuario))),
+            "Seleccione un rol",
+            new { @class = "form-control" }
+        )
+
+        @Html.ValidationMessageFor(x => x.Rol, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Estado)
+
+        @Html.DropDownListFor(
+            x => x.Estado,
+            new SelectList(Enum.GetValues(typeof(EstadoGeneral))),
+            "Seleccione un estado",
+            new { @class = "form-control" }
+        )
+
+        @Html.ValidationMessageFor(x => x.Estado, "", new { @class = "text-danger" })
+    </div>
+
+    <div id="panelResidente" style="display:none;">
+
+        <hr />
+
+        <h4>Información del Residente</h4>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.FechaIngreso)
+
+            @Html.TextBoxFor(x => x.FechaIngreso,
+                "{0:yyyy-MM-dd}",
+                new
+                {
+                    @class = "form-control",
+                    type = "date"
+                })
+
+            @Html.ValidationMessageFor(x => x.FechaIngreso, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+
+            @Html.Label("Vivienda")
+
+            @Html.DropDownListFor(
+                x => x.IdVivienda,
+                Model.Viviendas,
+                "Seleccione una vivienda",
+                new { @class = "form-control" }
+            )
+
+        </div>
+
+    </div>
+
+    <br />
+
+    <button class="btn btn-primary">
+        Actualizar
+    </button>
+}
+
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            function mostrarPanelResidente() {
+
+                var rol = $("#Rol option:selected").text();
+
+                if (rol === "Residente") {
+
+                    $("#panelResidente").slideDown();
+
+                }
+                else {
+
+                    $("#panelResidente").slideUp();
+
+                }
+
+            }
+
+            mostrarPanelResidente();
+
+            $("#Rol").change(function () {
+
+                mostrarPanelResidente();
+
+            });
+
+        });
+
+    </script>
+}
