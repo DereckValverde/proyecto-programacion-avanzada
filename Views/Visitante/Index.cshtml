@@ -1,0 +1,77 @@
+﻿@model IEnumerable<proyecto_programacion_avanzada.ViewModels.Visitante.VisitanteListViewModel>
+
+@{
+    ViewBag.Title = "Visitantes";
+}
+
+<h2>Visitantes y Proveedores</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<p>
+    @Html.ActionLink("Registrar ingreso", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+<div class="btn-group mb-3" role="group">
+    @Html.ActionLink("Todos", "Index", null, new { @class = "btn btn-outline-secondary" + (ViewBag.Filtro == null ? " active" : "") })
+    @Html.ActionLink("Dentro del condominio", "Index", new { filtro = "activos" }, new { @class = "btn btn-outline-secondary" + ((string)ViewBag.Filtro == "activos" ? " active" : "") })
+</div>
+
+<table class="table table-bordered table-striped text-center">
+
+    <tr>
+        <th>Nombre</th>
+        <th>Identificación</th>
+        <th>Tipo</th>
+        <th>Vivienda</th>
+        <th>Fecha Ingreso</th>
+        <th>Fecha Salida</th>
+        <th>Estado</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Nombre</td>
+
+            <td>@item.Identificacion</td>
+
+            <td>@item.Tipo</td>
+
+            <td>@item.NombreVivienda</td>
+
+            <td>@item.FechaIngreso.ToString("g")</td>
+
+            <td>@(item.FechaSalida.HasValue ? item.FechaSalida.Value.ToString("g") : "-")</td>
+
+            <td>
+                @if (item.SeEncuentraDentro)
+                {
+                    <span class="badge bg-success">Dentro</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Salió</span>
+                }
+            </td>
+
+            <td>
+                @Html.ActionLink("Detalles", "Details", new { id = item.IdVisitante }, new { @class = "btn btn-info btn-sm" })
+
+                @if (item.SeEncuentraDentro)
+                {
+                    @Html.ActionLink("Registrar salida", "RegistrarSalida", new { id = item.IdVisitante }, new { @class = "btn btn-warning btn-sm" })
+                }
+
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdVisitante }, new { @class = "btn btn-secondary btn-sm" })
+
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdVisitante }, new { @class = "btn btn-danger btn-sm" })
+            </td>
+        </tr>
+    }
+
+</table>

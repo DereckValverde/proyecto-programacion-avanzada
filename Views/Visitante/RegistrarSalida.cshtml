@@ -1,0 +1,43 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Visitante.VisitanteDetailsViewModel
+
+@{
+    ViewBag.Title = "Registrar Salida de Visitante";
+}
+
+<h2>Registrar Salida de Visitante</h2>
+
+<h4>¿Confirma el registro de salida para este visitante?</h4>
+
+<hr />
+
+<dl class="dl-horizontal">
+
+    <dt>Nombre</dt>
+    <dd>@Model.Nombre</dd>
+
+    <dt>Identificación</dt>
+    <dd>@Model.Identificacion</dd>
+
+    <dt>Tipo</dt>
+    <dd>@Model.Tipo</dd>
+
+    <dt>Vivienda</dt>
+    <dd>@Model.NombreVivienda</dd>
+
+    <dt>Fecha de Ingreso</dt>
+    <dd>@Model.FechaIngreso.ToString("g")</dd>
+
+</dl>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions">
+
+        <input type="submit" value="Registrar salida" class="btn btn-warning" />
+
+        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary" })
+
+    </div>
+}

@@ -4,6 +4,7 @@ using proyecto_programacion_avanzada.Entities;
 using proyecto_programacion_avanzada.ViewModels.Residente;
 using proyecto_programacion_avanzada.ViewModels.Usuario;
 using proyecto_programacion_avanzada.ViewModels.Vivienda;
+using proyecto_programacion_avanzada.ViewModels.Visitante;
 
 namespace proyecto_programacion_avanzada.Mappings
 {
@@ -99,6 +100,26 @@ namespace proyecto_programacion_avanzada.Mappings
                 .ReverseMap();
 
             CreateMap<Visitante, VisitanteDto>()
+                .ForMember(dest => dest.NombreVivienda,
+                    opt => opt.MapFrom(src =>
+                        "Bloque " + src.Vivienda.Bloque +
+                        " - Vivienda " + src.Vivienda.Numero));
+
+            CreateMap<VisitanteDto, Visitante>()
+                .ForMember(dest => dest.Vivienda, opt => opt.Ignore());
+
+            CreateMap<VisitanteDto, VisitanteIngresoViewModel>()
+                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<VisitanteDto, VisitanteEditViewModel>()
+                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<VisitanteDto, VisitanteListViewModel>()
+                .ReverseMap();
+
+            CreateMap<VisitanteDto, VisitanteDetailsViewModel>()
                 .ReverseMap();
 
             CreateMap<Incidencia, IncidenciaDto>()

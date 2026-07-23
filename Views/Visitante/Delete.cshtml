@@ -1,0 +1,46 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Visitante.VisitanteDetailsViewModel
+
+@{
+    ViewBag.Title = "Eliminar Visitante";
+}
+
+<h2>Eliminar Visitante</h2>
+
+<h4>¿Está seguro de que desea eliminar este registro de visitante?</h4>
+
+<hr />
+
+<dl class="dl-horizontal">
+
+    <dt>Nombre</dt>
+    <dd>@Model.Nombre</dd>
+
+    <dt>Identificación</dt>
+    <dd>@Model.Identificacion</dd>
+
+    <dt>Tipo</dt>
+    <dd>@Model.Tipo</dd>
+
+    <dt>Vivienda</dt>
+    <dd>@Model.NombreVivienda</dd>
+
+    <dt>Fecha de Ingreso</dt>
+    <dd>@Model.FechaIngreso.ToString("g")</dd>
+
+    <dt>Fecha de Salida</dt>
+    <dd>@(Model.FechaSalida.HasValue ? Model.FechaSalida.Value.ToString("g") : "Aún dentro del condominio")</dd>
+
+</dl>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions">
+
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
+
+        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary" })
+
+    </div>
+}
