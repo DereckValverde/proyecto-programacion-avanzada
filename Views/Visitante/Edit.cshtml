@@ -1,0 +1,75 @@
+﻿@model proyecto_programacion_avanzada.ViewModels.Visitante.VisitanteEditViewModel
+@using proyecto_programacion_avanzada.Common.Enums
+
+@{
+    ViewBag.Title = "Editar Visitante";
+}
+
+<h2>Editar Visitante</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.IdVisitante)
+
+    <div class="form-horizontal">
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.Nombre, new { @class = "form-label d-block" })
+            @Html.EditorFor(m => m.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.Identificacion, new { @class = "form-label d-block" })
+            @Html.EditorFor(m => m.Identificacion, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Identificacion, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.Tipo, new { @class = "form-label d-block" })
+            @Html.DropDownListFor(
+                m => m.Tipo,
+                new SelectList(Enum.GetValues(typeof(TipoVisitante))),
+                "Seleccione un tipo",
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.Tipo, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.FechaIngreso, new { @class = "form-label d-block" })
+            @Html.TextBoxFor(m => m.FechaIngreso, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+            @Html.ValidationMessageFor(m => m.FechaIngreso, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.FechaSalida, new { @class = "form-label d-block" })
+            @Html.TextBoxFor(m => m.FechaSalida, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+            @Html.ValidationMessageFor(m => m.FechaSalida, "", new { @class = "text-danger" })
+            <small class="form-text text-muted">Déjelo vacío si el visitante aún se encuentra dentro del condominio.</small>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.IdVivienda, "Vivienda que visita", new { @class = "form-label d-block" })
+            @Html.DropDownListFor(
+                m => m.IdVivienda,
+                (IEnumerable<SelectListItem>)ViewBag.Viviendas,
+                "Seleccione una vivienda",
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mt-4">
+            <input type="submit" value="Actualizar" class="btn btn-primary" />
+            @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
