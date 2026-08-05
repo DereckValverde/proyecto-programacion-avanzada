@@ -1,0 +1,167 @@
+﻿@model IEnumerable<proyecto_programacion_avanzada.ViewModels.AreaComun.AreaComunListViewModel>
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+@{
+    ViewBag.Title = "Áreas Comunes";
+}
+
+<div class="container-fluid d-flex flex-column p-5 gap-3">
+
+    <div>
+        @Html.ActionLink(
+            " ",
+            "Index",
+            "Home",
+            null,
+            new
+            {
+                @class = "bi bi-arrow-left-circle text-danger fs-4",
+                title = "Volver al inicio"
+            }
+        )
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Gestión de Áreas Comunes</h2>
+            <p class="text-muted mb-0">
+                Administre las zonas compartidas disponibles en el condominio.
+            </p>
+        </div>
+
+        @Html.ActionLink(
+            " Agregar área común",
+            "Create",
+            null,
+            new
+            {
+                @class = "btn btn-success rounded-1 px-3 py-2 shadow-sm bi bi-plus-circle-fill"
+            }
+        )
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            @TempData["Error"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Cerrar">
+            </button>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Cerrar">
+            </button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered text-center align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Capacidad</th>
+                            <th>Hora de apertura</th>
+                            <th>Hora de cierre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">
+                                        @item.Nombre
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(item.Descripcion)
+                                            ? "Sin descripción"
+                                            : item.Descripcion)
+                                    </td>
+
+                                    <td>
+                                        @item.Capacidad personas
+                                    </td>
+
+                                    <td>
+                                        @item.HoraApertura.ToString(@"hh\:mm")
+                                    </td>
+
+                                    <td>
+                                        @item.HoraCierre.ToString(@"hh\:mm")
+                                    </td>
+
+                                    <td class="text-nowrap">
+                                        @Html.ActionLink(
+                                            " Editar",
+                                            "Edit",
+                                            new { id = item.IdArea },
+                                            new
+                                            {
+                                                @class = "btn btn-warning btn-sm bi bi-pencil-square me-1"
+                                            }
+                                        )
+
+                                        @Html.ActionLink(
+                                            " Detalles",
+                                            "Details",
+                                            new { id = item.IdArea },
+                                            new
+                                            {
+                                                @class = "btn btn-info btn-sm bi bi-eye-fill me-1"
+                                            }
+                                        )
+
+                                        @Html.ActionLink(
+                                            " Eliminar",
+                                            "Delete",
+                                            new { id = item.IdArea },
+                                            new
+                                            {
+                                                @class = "btn btn-danger btn-sm bi bi-trash-fill"
+                                            }
+                                        )
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="py-4 text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    No hay áreas comunes registradas.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

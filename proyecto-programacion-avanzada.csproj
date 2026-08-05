@@ -138,6 +138,7 @@
     <Compile Include="Common\Enums\RolUsuario.cs" />
     <Compile Include="Common\Enums\TipoVisitante.cs" />
     <Compile Include="Common\Enums\TipoVivienda.cs" />
+    <Compile Include="Controllers\AreaComunController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ResidenteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -162,9 +163,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\DbContexts\CondominioContext.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementations\AreaComunRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\ResidenteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\UsuarioRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\ViviendaRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Interfaces\IAreaComunRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IResidenteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IUsuarioRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IViviendaRepository.cs" />
@@ -176,12 +179,18 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Implementations\AreaComunService.cs" />
     <Compile Include="Services\Implementations\ResidenteService.cs" />
     <Compile Include="Services\Implementations\UsuarioService.cs" />
     <Compile Include="Services\Implementations\ViviendaService.cs" />
+    <Compile Include="Services\Interfaces\IAreaComunService.cs" />
     <Compile Include="Services\Interfaces\IResidenteService.cs" />
     <Compile Include="Services\Interfaces\IUsuarioService.cs" />
     <Compile Include="Services\Interfaces\IViviendaService.cs" />
+    <Compile Include="ViewModels\AreaComun\AreaComunCreateViewModel.cs" />
+    <Compile Include="ViewModels\AreaComun\AreaComunDetailsViewModel.cs" />
+    <Compile Include="ViewModels\AreaComun\AreaComunEditViewModel.cs" />
+    <Compile Include="ViewModels\AreaComun\AreaComunListViewModel.cs" />
     <Compile Include="ViewModels\Residente\ResidenteCreateViewModel.cs" />
     <Compile Include="ViewModels\Residente\ResidenteDetailsViewModel.cs" />
     <Compile Include="ViewModels\Residente\ResidenteEditViewModel.cs" />
@@ -261,6 +270,11 @@
     <Content Include="Views\Residente\Index.cshtml" />
     <Content Include="Views\Residente\Details.cshtml" />
     <Content Include="Views\Residente\Delete.cshtml" />
+    <Content Include="Views\AreaComun\Index.cshtml" />
+    <Content Include="Views\AreaComun\Create.cshtml" />
+    <Content Include="Views\AreaComun\Edit.cshtml" />
+    <Content Include="Views\AreaComun\Details.cshtml" />
+    <Content Include="Views\AreaComun\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

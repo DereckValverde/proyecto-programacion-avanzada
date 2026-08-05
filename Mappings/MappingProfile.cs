@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using proyecto_programacion_avanzada.DTOs;
 using proyecto_programacion_avanzada.Entities;
+using proyecto_programacion_avanzada.ViewModels.AreaComun;
 using proyecto_programacion_avanzada.ViewModels.Residente;
 using proyecto_programacion_avanzada.ViewModels.Usuario;
 using proyecto_programacion_avanzada.ViewModels.Vivienda;
@@ -62,12 +63,10 @@ namespace proyecto_programacion_avanzada.Mappings
                         "Bloque " + src.Vivienda.Bloque +
                         " - Vivienda " + src.Vivienda.Numero));
 
-
             CreateMap<ResidenteDto, Residente>()
                 .ForMember(dest => dest.Usuario, opt => opt.Ignore())
                 .ForMember(dest => dest.Vivienda, opt => opt.Ignore())
                 .ForMember(dest => dest.Incidencias, opt => opt.Ignore());
-
 
             CreateMap<ResidenteDto, ResidenteCreateViewModel>()
                 .ForMember(dest => dest.Usuarios, opt => opt.Ignore())
@@ -85,19 +84,34 @@ namespace proyecto_programacion_avanzada.Mappings
 
             CreateMap<ResidenteDto, ResidenteDetailsViewModel>()
                 .ForMember(dest => dest.NombreUsuario,
-                opt => opt.MapFrom(src => src.NombreUsuario))
+                    opt => opt.MapFrom(src => src.NombreUsuario))
                 .ForMember(dest => dest.NombreVivienda,
-                opt => opt.MapFrom(src => src.NombreVivienda));
+                    opt => opt.MapFrom(src => src.NombreVivienda));
 
 
             CreateMap<Pago, PagoDto>()
                 .ReverseMap();
 
+
             CreateMap<AreaComun, AreaComunDto>()
                 .ReverseMap();
 
+            CreateMap<AreaComunDto, AreaComunCreateViewModel>()
+                .ReverseMap();
+
+            CreateMap<AreaComunDto, AreaComunEditViewModel>()
+                .ReverseMap();
+
+            CreateMap<AreaComunDto, AreaComunListViewModel>()
+                .ReverseMap();
+
+            CreateMap<AreaComunDto, AreaComunDetailsViewModel>()
+                .ReverseMap();
+
+
             CreateMap<Reserva, ReservaDto>()
                 .ReverseMap();
+
 
             CreateMap<Visitante, VisitanteDto>()
                 .ForMember(dest => dest.NombreVivienda,
@@ -121,6 +135,7 @@ namespace proyecto_programacion_avanzada.Mappings
 
             CreateMap<VisitanteDto, VisitanteDetailsViewModel>()
                 .ReverseMap();
+
 
             CreateMap<Incidencia, IncidenciaDto>()
                 .ReverseMap();
