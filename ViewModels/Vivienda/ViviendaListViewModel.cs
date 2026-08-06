@@ -13,5 +13,9 @@ namespace proyecto_programacion_avanzada.ViewModels.Vivienda
         public TipoVivienda Tipo { get; set; }
 
         public EstadoGeneral Estado { get; set; }
+
+        public string TipoNombre => Tipo.ToString();
+
+        public string EstadoNombre => Estado.ToString();
     }
 }

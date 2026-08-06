@@ -18,6 +18,8 @@ namespace proyecto_programacion_avanzada.DTOs
         [Required]
         public EstadoGeneral Estado { get; set; }
 
+        public string EstadoNombre => Estado.ToString();
+
         public int IdUsuario { get; set; }
 
         public int IdVivienda { get; set; }

@@ -29,5 +29,9 @@ namespace proyecto_programacion_avanzada.DTOs
 
         [Required]
         public EstadoGeneral Estado { get; set; }
+
+        public string RolNombre => Rol.ToString();
+
+        public string EstadoNombre => Estado.ToString();
     }
 }

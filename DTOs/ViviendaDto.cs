@@ -20,5 +20,9 @@ namespace proyecto_programacion_avanzada.DTOs
 
         [Required]
         public EstadoGeneral Estado { get; set; }
+
+        public string TipoNombre => Tipo.ToString();
+
+        public string EstadoNombre => Estado.ToString();
     }
 }

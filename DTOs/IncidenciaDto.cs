@@ -21,6 +21,10 @@ namespace proyecto_programacion_avanzada.DTOs
         [Required]
         public PrioridadIncidencia Prioridad { get; set; }
 
+        public string EstadoNombre => Estado.ToString();
+
+        public string PrioridadNombre => Prioridad.ToString();
+
         public int IdResidente { get; set; }
     }
 }

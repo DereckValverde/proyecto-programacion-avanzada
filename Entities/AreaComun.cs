@@ -27,7 +27,6 @@ namespace proyecto_programacion_avanzada.Entities
         [Required]
         public TimeSpan HoraCierre { get; set; }
 
-        // Relación
         public virtual ICollection<Reserva> Reservas { get; set; }
 
         public AreaComun()

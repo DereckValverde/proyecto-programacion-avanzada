@@ -13,6 +13,8 @@ namespace proyecto_programacion_avanzada.ViewModels.Visitante
 
         public TipoVisitante Tipo { get; set; }
 
+        public string TipoNombre => Tipo.ToString();
+
         public DateTime FechaIngreso { get; set; }
 
         public DateTime? FechaSalida { get; set; }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using proyecto_programacion_avanzada.DTOs;
 using proyecto_programacion_avanzada.Entities;
+using proyecto_programacion_avanzada.ViewModels.Noticia;
 using proyecto_programacion_avanzada.ViewModels.Residente;
 using proyecto_programacion_avanzada.ViewModels.Usuario;
 using proyecto_programacion_avanzada.ViewModels.Vivienda;
@@ -13,7 +14,26 @@ namespace proyecto_programacion_avanzada.Mappings
         public MappingProfile()
         {
             CreateMap<Usuario, UsuarioDto>()
-                .ReverseMap();
+                .ForMember(dest => dest.IdUsuario, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Contrasena, opt => opt.MapFrom(src => src.PasswordHash));
+
+            CreateMap<UsuarioDto, Usuario>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.IdUsuario))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Correo))
+                .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Contrasena))
+                .ForMember(dest => dest.Email, opt => opt.Ignore())
+                .ForMember(dest => dest.EmailConfirmed, opt => opt.Ignore())
+                .ForMember(dest => dest.SecurityStamp, opt => opt.Ignore())
+                .ForMember(dest => dest.PhoneNumber, opt => opt.Ignore())
+                .ForMember(dest => dest.PhoneNumberConfirmed, opt => opt.Ignore())
+                .ForMember(dest => dest.TwoFactorEnabled, opt => opt.Ignore())
+                .ForMember(dest => dest.LockoutEndDateUtc, opt => opt.Ignore())
+                .ForMember(dest => dest.LockoutEnabled, opt => opt.Ignore())
+                .ForMember(dest => dest.AccessFailedCount, opt => opt.Ignore())
+                .ForMember(dest => dest.Roles, opt => opt.Ignore())
+                .ForMember(dest => dest.Claims, opt => opt.Ignore())
+                .ForMember(dest => dest.Logins, opt => opt.Ignore());
 
             CreateMap<UsuarioDto, UsuarioCreateViewModel>()
                 .ForMember(dest => dest.FechaIngreso, opt => opt.Ignore())
@@ -123,6 +143,21 @@ namespace proyecto_programacion_avanzada.Mappings
                 .ReverseMap();
 
             CreateMap<Incidencia, IncidenciaDto>()
+                .ReverseMap();
+
+            CreateMap<Noticia, NoticiaDto>()
+                .ReverseMap();
+
+            CreateMap<NoticiaDto, NoticiaCreateViewModel>()
+                .ReverseMap();
+
+            CreateMap<NoticiaDto, NoticiaEditViewModel>()
+                .ReverseMap();
+
+            CreateMap<NoticiaDto, NoticiaListViewModel>()
+                .ReverseMap();
+
+            CreateMap<NoticiaDto, NoticiaDetailsViewModel>()
                 .ReverseMap();
         }
     }

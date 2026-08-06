@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using proyecto_programacion_avanzada.App_Start;
 using proyecto_programacion_avanzada.Mappings;
 
 namespace proyecto_programacion_avanzada
@@ -19,7 +17,8 @@ namespace proyecto_programacion_avanzada
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // Inicializa AutoMapper
+            FluentValidationConfig.RegisterFluentValidation();
+
             AutoMapperConfig.RegisterMappings();
         }
     }

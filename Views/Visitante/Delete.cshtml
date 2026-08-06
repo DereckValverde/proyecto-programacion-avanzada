@@ -4,43 +4,49 @@
     ViewBag.Title = "Eliminar Visitante";
 }
 
-<h2>Eliminar Visitante</h2>
-
-<h4>¿Está seguro de que desea eliminar este registro de visitante?</h4>
-
-<hr />
-
-<dl class="dl-horizontal">
-
-    <dt>Nombre</dt>
-    <dd>@Model.Nombre</dd>
-
-    <dt>Identificación</dt>
-    <dd>@Model.Identificacion</dd>
-
-    <dt>Tipo</dt>
-    <dd>@Model.Tipo</dd>
-
-    <dt>Vivienda</dt>
-    <dd>@Model.NombreVivienda</dd>
-
-    <dt>Fecha de Ingreso</dt>
-    <dd>@Model.FechaIngreso.ToString("g")</dd>
-
-    <dt>Fecha de Salida</dt>
-    <dd>@(Model.FechaSalida.HasValue ? Model.FechaSalida.Value.ToString("g") : "Aún dentro del condominio")</dd>
-
-</dl>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-actions">
-
-        <input type="submit" value="Eliminar" class="btn btn-danger" />
-
-        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-secondary" })
-
+<div class="card shadow mx-auto" style="max-width: 640px;">
+    <div class="card-header bg-danger text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-trash-alt me-2"></i>Eliminar Visitante</h2>
     </div>
-}
+
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            ¿Está seguro de que desea eliminar este registro de visitante?
+        </div>
+
+        <dl class="dl-condominio">
+            <dt>Nombre</dt>
+            <dd>@Model.Nombre</dd>
+
+            <dt>Identificación</dt>
+            <dd>@Model.Identificacion</dd>
+
+            <dt>Tipo</dt>
+            <dd>@Model.Tipo</dd>
+
+            <dt>Vivienda</dt>
+            <dd>@Model.NombreVivienda</dd>
+
+            <dt>Fecha de Ingreso</dt>
+            <dd>@Model.FechaIngreso.ToString("g")</dd>
+
+            <dt>Fecha de Salida</dt>
+            <dd>@(Model.FechaSalida.HasValue ? Model.FechaSalida.Value.ToString("g") : "Aún dentro del condominio")</dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="d-flex justify-content-center gap-2">
+                <button class="btn btn-danger">
+                    <i class="fas fa-trash-alt me-1"></i>Eliminar
+                </button>
+
+                <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Cancelar</a>
+            </div>
+        }
+    </div>
+</div>
+

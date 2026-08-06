@@ -14,5 +14,9 @@ namespace proyecto_programacion_avanzada.ViewModels.Usuario
         public string Telefono { get; set; }
         public RolUsuario Rol { get; set; }
         public EstadoGeneral Estado { get; set; }
+
+        public string RolNombre => Rol.ToString();
+
+        public string EstadoNombre => Estado.ToString();
     }
 }

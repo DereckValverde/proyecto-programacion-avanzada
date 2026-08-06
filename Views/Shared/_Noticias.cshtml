@@ -1,0 +1,55 @@
+﻿@using System.Linq
+@using proyecto_programacion_avanzada.ViewModels.Noticia
+@model IEnumerable<NoticiaListViewModel>
+
+<div class="d-flex align-items-center gap-2 mb-4">
+    <div class="rounded-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background-color: var(--cl-primary-soft); color: var(--cl-primary); font-size: 1.3rem;">
+        <i class="fas fa-bullhorn"></i>
+    </div>
+    <div>
+        <h2 class="h5 mb-0">Noticias y alertas</h2>
+        <small class="text-muted">Información actualizada del condominio</small>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state card shadow">
+        <i class="fas fa-info-circle"></i>
+        No hay noticias ni alertas publicadas por el momento.
+    </div>
+}
+else
+{
+    foreach (var alerta in Model.Where(n => n.EsAlerta))
+    {
+        <div class="alert alert-warning shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <strong><i class="fas fa-exclamation-triangle me-1"></i> @alerta.Titulo</strong>
+                <small class="text-nowrap ms-2">@alerta.FechaPublicacion.ToString("dd/MM/yyyy")</small>
+            </div>
+            <div style="white-space: pre-wrap;">@alerta.Contenido</div>
+            @if (!string.IsNullOrWhiteSpace(alerta.Autor))
+            {
+                <small class="text-muted">Publicado por: @alerta.Autor</small>
+            }
+        </div>
+    }
+
+    foreach (var noticia in Model.Where(n => !n.EsAlerta))
+    {
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h6 class="card-title mb-0"><i class="fas fa-newspaper me-1"></i> @noticia.Titulo</h6>
+                    <small class="text-muted text-nowrap ms-2">@noticia.FechaPublicacion.ToString("dd/MM/yyyy")</small>
+                </div>
+                <div class="card-text mt-2" style="white-space: pre-wrap;">@noticia.Contenido</div>
+                @if (!string.IsNullOrWhiteSpace(noticia.Autor))
+                {
+                    <small class="text-muted">Publicado por: @noticia.Autor</small>
+                }
+            </div>
+        </div>
+    }
+}

@@ -25,7 +25,6 @@ namespace proyecto_programacion_avanzada.Entities
         [Required]
         public EstadoGeneral Estado { get; set; }
 
-        // Relaciones
         public virtual ICollection<Residente> Residentes { get; set; }
 
         public virtual ICollection<Pago> Pagos { get; set; }

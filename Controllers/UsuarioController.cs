@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace proyecto_programacion_avanzada.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class UsuarioController : Controller
     {
 
@@ -113,6 +114,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 _residenteRepository.Guardar();
             }
 
+            TempData["Success"] = "Usuario registrado exitosamente.";
+
             return RedirectToAction("Index");
         }
 
@@ -187,7 +190,6 @@ namespace proyecto_programacion_avanzada.Controllers
             _usuarioService.Actualizar(usuarioDto);
 
 
-            // Si el usuario es residente, actualizar residente
             if (model.Rol == RolUsuario.Residente)
             {
                 var residente = _residenteRepository.ObtenerPorIdUsuario(model.IdUsuario);
@@ -204,6 +206,7 @@ namespace proyecto_programacion_avanzada.Controllers
                 }
             }
 
+            TempData["Success"] = "Usuario actualizado exitosamente.";
 
             return RedirectToAction("Index");
         }
@@ -237,6 +240,8 @@ namespace proyecto_programacion_avanzada.Controllers
             }
 
             _usuarioService.Eliminar(id);
+
+            TempData["Success"] = "Usuario eliminado exitosamente.";
 
             return RedirectToAction("Index");
         }

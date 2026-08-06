@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace proyecto_programacion_avanzada.Controllers
 {
+    [Authorize(Roles = "Administrador, Residente, Guarda")]
     public class VisitanteController : Controller
     {
         private readonly VisitanteService _visitanteService;
@@ -41,8 +42,6 @@ namespace proyecto_programacion_avanzada.Controllers
         }
 
         // GET: Visitante
-        // Listado / historial de visitantes. filtro = "activos" muestra únicamente
-        // quienes se encuentran actualmente dentro del condominio.
         public ActionResult Index(string filtro)
         {
             var visitantesDto = filtro == "activos"
@@ -70,7 +69,6 @@ namespace proyecto_programacion_avanzada.Controllers
         }
 
         // GET: Visitante/Create
-        // Formulario para registrar el ingreso de un visitante o proveedor.
         public ActionResult Create()
         {
             CargarCombos();
@@ -98,6 +96,8 @@ namespace proyecto_programacion_avanzada.Controllers
                     try
                     {
                         _visitanteService.RegistrarIngreso(dto);
+
+                        TempData["Success"] = "Ingreso registrado exitosamente.";
 
                         return RedirectToAction("Index");
                     }
@@ -148,6 +148,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 {
                     _visitanteService.Actualizar(dto);
 
+                    TempData["Success"] = "Visitante actualizado exitosamente.";
+
                     return RedirectToAction("Index");
                 }
                 catch (InvalidOperationException ex)
@@ -162,7 +164,6 @@ namespace proyecto_programacion_avanzada.Controllers
         }
 
         // GET: Visitante/RegistrarSalida/5
-        // Pantalla de confirmación para registrar la salida de un visitante activo.
         public ActionResult RegistrarSalida(int id)
         {
             var visitanteDto = _visitanteService.ObtenerPorId(id);
@@ -189,6 +190,8 @@ namespace proyecto_programacion_avanzada.Controllers
             try
             {
                 _visitanteService.RegistrarSalida(id);
+
+                TempData["Success"] = "Salida registrada exitosamente.";
             }
             catch (InvalidOperationException ex)
             {
@@ -222,6 +225,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 return HttpNotFound();
 
             _visitanteService.Eliminar(id);
+
+            TempData["Success"] = "Visitante eliminado exitosamente.";
 
             return RedirectToAction("Index");
         }

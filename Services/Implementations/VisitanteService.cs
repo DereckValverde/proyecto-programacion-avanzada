@@ -53,7 +53,6 @@ namespace proyecto_programacion_avanzada.Services.Implementations
             return _visitanteRepository.ObtenerActivoPorIdentificacion(identificacion) != null;
         }
 
-        // Registra el ingreso de un visitante o proveedor al condominio.
         public void RegistrarIngreso(VisitanteDto visitanteDto)
         {
             if (ExisteVisitanteActivoConIdentificacion(visitanteDto.Identificacion))
@@ -74,7 +73,6 @@ namespace proyecto_programacion_avanzada.Services.Implementations
             _visitanteRepository.Guardar();
         }
 
-        // Registra la salida de un visitante que se encuentra actualmente dentro del condominio.
         public void RegistrarSalida(int id)
         {
             var visitante = _visitanteRepository.ObtenerPorId(id);

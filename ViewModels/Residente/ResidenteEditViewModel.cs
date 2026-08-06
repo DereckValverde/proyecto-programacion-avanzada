@@ -14,17 +14,13 @@ namespace proyecto_programacion_avanzada.ViewModels.Residente
         [StringLength(100)]
         public string Nombre { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateTime FechaIngreso { get; set; }
 
-        [Required]
         public EstadoGeneral Estado { get; set; }
 
-        [Required]
         public int IdUsuario { get; set; }
 
-        [Required]
         public int IdVivienda { get; set; }
 
         public IEnumerable<SelectListItem> Usuarios { get; set; }

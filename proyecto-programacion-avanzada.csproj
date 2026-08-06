@@ -120,6 +120,39 @@
       <Private>True</Private>
       <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>packages\FluentValidation.8.6.3\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc">
+      <HintPath>packages\FluentValidation.Mvc5.8.6.1\lib\net45\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute">
+      <HintPath>packages\FluentValidation.ValidatorAttribute.8.6.1\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>packages\Microsoft.AspNet.Identity.EntityFramework.2.2.4\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>packages\Microsoft.Owin.4.2.3\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>packages\Microsoft.Owin.Host.SystemWeb.4.2.3\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>packages\Microsoft.Owin.Security.4.2.3\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>packages\Microsoft.Owin.Security.Cookies.4.2.3\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -129,7 +162,9 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\FluentValidationConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="Common\Enums\EstadoGeneral.cs" />
     <Compile Include="Common\Enums\EstadoIncidencia.cs" />
     <Compile Include="Common\Enums\EstadoPago.cs" />
@@ -139,11 +174,14 @@
     <Compile Include="Common\Enums\TipoVisitante.cs" />
     <Compile Include="Common\Enums\TipoVivienda.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NoticiaController.cs" />
     <Compile Include="Controllers\ResidenteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Controllers\ViviendaController.cs" />
     <Compile Include="DTOs\AreaComunDto.cs" />
     <Compile Include="DTOs\IncidenciaDto.cs" />
+    <Compile Include="DTOs\NoticiaDto.cs" />
     <Compile Include="DTOs\PagoDto.cs" />
     <Compile Include="DTOs\ReservaDto.cs" />
     <Compile Include="DTOs\ResidenteDto.cs" />
@@ -152,6 +190,8 @@
     <Compile Include="DTOs\ViviendaDto.cs" />
     <Compile Include="Entities\AreaComun.cs" />
     <Compile Include="Entities\Incidencia.cs" />
+    <Compile Include="Entities\IdentityTypes.cs" />
+    <Compile Include="Entities\Noticia.cs" />
     <Compile Include="Entities\Pago.cs" />
     <Compile Include="Entities\Reserva.cs" />
     <Compile Include="Entities\Residente.cs" />
@@ -162,11 +202,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\DbContexts\CondominioContext.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementations\NoticiaRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\ResidenteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\UsuarioRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Implementations\VisitanteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Implementations\ViviendaRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Interfaces\INoticiaRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IResidenteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IUsuarioRepository.cs" />
+    <Compile Include="Infrastructure\Repositories\Interfaces\IVisitanteRepository.cs" />
     <Compile Include="Infrastructure\Repositories\Interfaces\IViviendaRepository.cs" />
     <Compile Include="Mappings\AutoMapperConfig.cs" />
     <Compile Include="Mappings\MappingProfile.cs" />
@@ -174,14 +218,38 @@
     <Compile Include="Migrations\202607171820568_InitialCreate.Designer.cs">
       <DependentUpon>202607171820568_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202608041200000_AddNoticias.cs" />
+    <Compile Include="Migrations\202608041200000_AddNoticias.Designer.cs">
+      <DependentUpon>202608041200000_AddNoticias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608051200000_AddIdentity.cs" />
+    <Compile Include="Migrations\202608051200000_AddIdentity.Designer.cs">
+      <DependentUpon>202608051200000_AddIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Implementations\NoticiaService.cs" />
     <Compile Include="Services\Implementations\ResidenteService.cs" />
     <Compile Include="Services\Implementations\UsuarioService.cs" />
+    <Compile Include="Services\Implementations\VisitanteService.cs" />
     <Compile Include="Services\Implementations\ViviendaService.cs" />
+    <Compile Include="Services\Interfaces\INoticiaService.cs" />
     <Compile Include="Services\Interfaces\IResidenteService.cs" />
     <Compile Include="Services\Interfaces\IUsuarioService.cs" />
+    <Compile Include="Services\Interfaces\IVisitanteService.cs" />
     <Compile Include="Services\Interfaces\IViviendaService.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Validators\LoginViewModelValidator.cs" />
+    <Compile Include="Validators\NoticiaCreateViewModelValidator.cs" />
+    <Compile Include="Validators\NoticiaEditViewModelValidator.cs" />
+    <Compile Include="Validators\UsuarioCreateViewModelValidator.cs" />
+    <Compile Include="Validators\UsuarioEditViewModelValidator.cs" />
+    <Compile Include="ViewModels\Home\HomeIndexViewModel.cs" />
+    <Compile Include="ViewModels\Login\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Noticia\NoticiaCreateViewModel.cs" />
+    <Compile Include="ViewModels\Noticia\NoticiaDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Noticia\NoticiaEditViewModel.cs" />
+    <Compile Include="ViewModels\Noticia\NoticiaListViewModel.cs" />
     <Compile Include="ViewModels\Residente\ResidenteCreateViewModel.cs" />
     <Compile Include="ViewModels\Residente\ResidenteDetailsViewModel.cs" />
     <Compile Include="ViewModels\Residente\ResidenteEditViewModel.cs" />
@@ -190,6 +258,10 @@
     <Compile Include="ViewModels\Usuario\UsuarioDetailsViewModel.cs" />
     <Compile Include="ViewModels\Usuario\UsuarioEditViewModel.cs" />
     <Compile Include="ViewModels\Usuario\UsuarioListViewModel.cs" />
+    <Compile Include="ViewModels\Visitante\VisitanteDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Visitante\VisitanteEditViewModel.cs" />
+    <Compile Include="ViewModels\Visitante\VisitanteIngresoViewModel.cs" />
+    <Compile Include="ViewModels\Visitante\VisitanteListViewModel.cs" />
     <Compile Include="ViewModels\Vivienda\ViviendaCreateViewModel.cs" />
     <Compile Include="ViewModels\Vivienda\ViviendaDetailsViewModel.cs" />
     <Compile Include="ViewModels\Vivienda\ViviendaEditViewModel.cs" />
@@ -261,6 +333,18 @@
     <Content Include="Views\Residente\Index.cshtml" />
     <Content Include="Views\Residente\Details.cshtml" />
     <Content Include="Views\Residente\Delete.cshtml" />
+    <Content Include="Views\Noticia\Create.cshtml" />
+    <Content Include="Views\Noticia\Delete.cshtml" />
+    <Content Include="Views\Noticia\Details.cshtml" />
+    <Content Include="Views\Noticia\Edit.cshtml" />
+    <Content Include="Views\Noticia\Index.cshtml" />
+    <Content Include="Views\Visitante\Create.cshtml" />
+    <Content Include="Views\Visitante\Delete.cshtml" />
+    <Content Include="Views\Visitante\Details.cshtml" />
+    <Content Include="Views\Visitante\Edit.cshtml" />
+    <Content Include="Views\Visitante\Index.cshtml" />
+    <Content Include="Views\Visitante\RegistrarSalida.cshtml" />
+    <Content Include="Views\Shared\_Noticias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -295,6 +379,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202607171820568_InitialCreate.resx">
       <DependentUpon>202607171820568_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608041200000_AddNoticias.resx">
+      <DependentUpon>202608041200000_AddNoticias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608051200000_AddIdentity.resx">
+      <DependentUpon>202608051200000_AddIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

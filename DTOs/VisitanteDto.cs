@@ -19,6 +19,8 @@ namespace proyecto_programacion_avanzada.DTOs
         [Required]
         public TipoVisitante Tipo { get; set; }
 
+        public string TipoNombre => Tipo.ToString();
+
         [Required]
         public DateTime FechaIngreso { get; set; }
 

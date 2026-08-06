@@ -20,7 +20,7 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
 
         public void Actualizar(Usuario usuario)
         {
-            var usuarioExistente = _context.Usuarios.Find(usuario.IdUsuario);
+            var usuarioExistente = _context.Users.Find(usuario.Id);
 
             if(usuarioExistente == null)
             {
@@ -28,7 +28,7 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
             }
 
             usuarioExistente.Nombre = usuario.Nombre;
-            usuarioExistente.Correo = usuario.Correo;
+            usuarioExistente.UserName = usuario.UserName;
             usuarioExistente.Telefono = usuario.Telefono;
             usuarioExistente.Rol = usuario.Rol;
             usuarioExistente.Estado = usuario.Estado;
@@ -36,16 +36,16 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
 
         public void Agregar(Usuario usuario)
         {
-            _context.Usuarios.Add(usuario);
+            _context.Users.Add(usuario);
         }
 
         public void Eliminar(int id)
         {
-            Usuario usuario = _context.Usuarios.Find(id);
+            Usuario usuario = _context.Users.Find(id);
 
             if(usuario != null)
             {
-                _context.Usuarios.Remove(usuario);
+                _context.Users.Remove(usuario);
             }
         }
 
@@ -57,12 +57,12 @@ namespace proyecto_programacion_avanzada.Infrastructure.Repositories.Implementat
 
         public Usuario ObtenerPorId(int id)
         {
-            return _context.Usuarios.Find(id);
+            return _context.Users.Find(id);
         }
 
         public IEnumerable<Usuario> ObtenerTodos()
         {
-            return _context.Usuarios.ToList();
+            return _context.Users.ToList();
         }
     }
 }

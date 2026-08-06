@@ -16,6 +16,7 @@ using System.Web.Mvc;
 
 namespace proyecto_programacion_avanzada.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ViviendaController : Controller
     {
 
@@ -57,7 +58,7 @@ namespace proyecto_programacion_avanzada.Controllers
         //Get: Vivienda/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ViviendaCreateViewModel());
         }
 
         //Post Vivienda/Create
@@ -70,6 +71,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 var dto = AutoMapperConfig.Mapper.Map<ViviendaDto>(model);
 
                 _viviendaService.Agregar(dto);
+
+                TempData["Success"] = "Vivienda registrada exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -103,6 +106,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 var dto = AutoMapperConfig.Mapper.Map<ViviendaDto>(model);
 
                 _viviendaService.Actualizar(dto);
+
+                TempData["Success"] = "Vivienda actualizada exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -143,6 +148,8 @@ namespace proyecto_programacion_avanzada.Controllers
 
 
             _viviendaService.Eliminar(id);
+
+            TempData["Success"] = "Vivienda eliminada exitosamente.";
 
             return RedirectToAction("Index");
         }

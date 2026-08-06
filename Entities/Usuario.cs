@@ -1,31 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using proyecto_programacion_avanzada.Common.Enums;
 
 namespace proyecto_programacion_avanzada.Entities
 {
-    [Table("Usuarios")]
-    public class Usuario
+    [Table("AspNetUsers")]
+    public class Usuario : IdentityUser<int, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
-        [Key]
-        public int IdUsuario { get; set; }
-
         [Required]
         [StringLength(100)]
         public string Nombre { get; set; }
 
-        [Required]
-        [StringLength(150)]
-        [Index("IX_Usuario_Correo", IsUnique = true)]
-        public string Correo { get; set; }
-
         [StringLength(20)]
         [Phone]
         public string Telefono { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string Contrasena { get; set; }
 
         [Required]
         public RolUsuario Rol { get; set; }

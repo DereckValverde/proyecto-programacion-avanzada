@@ -20,6 +20,8 @@ namespace proyecto_programacion_avanzada.DTOs
         [Required]
         public EstadoReserva Estado { get; set; }
 
+        public string EstadoNombre => Estado.ToString();
+
         public int IdVivienda { get; set; }
 
         public int IdArea { get; set; }
