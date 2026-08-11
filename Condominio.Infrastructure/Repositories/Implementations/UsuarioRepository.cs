@@ -1,0 +1,68 @@
+﻿using Condominio.Domain.Entities;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Application.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Condominio.Infrastructure.Repositories.Implementations
+{
+    public class UsuarioRepository : IUsuarioRepository
+    {
+
+        private readonly CondominioContext _context;
+
+        public UsuarioRepository(CondominioContext context)
+        {
+            _context = context;
+        }
+
+        public void Actualizar(Usuario usuario)
+        {
+            var usuarioExistente = _context.Users.Find(usuario.Id);
+
+            if(usuarioExistente == null)
+            {
+                return;
+            }
+
+            usuarioExistente.Nombre = usuario.Nombre;
+            usuarioExistente.UserName = usuario.UserName;
+            usuarioExistente.Telefono = usuario.Telefono;
+            usuarioExistente.Rol = usuario.Rol;
+            usuarioExistente.Estado = usuario.Estado;
+        }
+
+        public void Agregar(Usuario usuario)
+        {
+            _context.Users.Add(usuario);
+        }
+
+        public void Eliminar(int id)
+        {
+            Usuario usuario = _context.Users.Find(id);
+
+            if(usuario != null)
+            {
+                _context.Users.Remove(usuario);
+            }
+        }
+
+        public void Guardar()
+        {
+
+            _context.SaveChanges();
+        }
+
+        public Usuario ObtenerPorId(int id)
+        {
+            return _context.Users.Find(id);
+        }
+
+        public IEnumerable<Usuario> ObtenerTodos()
+        {
+            return _context.Users.ToList();
+        }
+    }
+}

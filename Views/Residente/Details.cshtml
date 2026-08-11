@@ -1,31 +1,32 @@
-﻿@model proyecto_programacion_avanzada.ViewModels.Residente.ResidenteDetailsViewModel
+﻿@model Condominio.Application.ViewModels.Residente.ResidenteDetailsViewModel
 
 @{
     ViewBag.Title = "Detalle del Residente";
 }
 
-<h2>Detalle del Residente</h2>
+<div class="card shadow mx-auto" style="max-width: 640px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-id-card me-2"></i>Detalle del Residente</h2>
+    </div>
 
-<div>
-    <hr />
+    <div class="card-body">
+        <dl class="dl-condominio">
+            <dt>Nombre</dt>
+            <dd>@Model.Nombre</dd>
 
-    <dl class="dl-horizontal">
+            <dt>Fecha de Ingreso</dt>
+            <dd>@Model.FechaIngreso.ToShortDateString()</dd>
 
-        <dt>Nombre</dt>
-        <dd>@Model.Nombre</dd>
+            <dt>Estado</dt>
+            <dd><span class="badge bg-success">@Model.Estado</span></dd>
 
-        <dt>Fecha de Ingreso</dt>
-        <dd>@Model.FechaIngreso.ToShortDateString()</dd>
+            <dt>Vivienda</dt>
+            <dd>@Model.NombreVivienda</dd>
+        </dl>
 
-        <dt>Estado</dt>
-        <dd>@Model.Estado</dd>
-
-        <dt>Vivienda</dt>
-        <dd>@Model.NombreVivienda</dd>
-
-    </dl>
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+        </div>
+    </div>
 </div>
 
-<p>
-    @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-secondary" })
-</p>

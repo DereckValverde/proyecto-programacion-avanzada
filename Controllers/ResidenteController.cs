@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
-using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.ViewModels;
-using proyecto_programacion_avanzada.ViewModels.Residente;
+using Condominio.Application.DTOs;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.ViewModels;
+using Condominio.Application.ViewModels.Residente;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ResidenteController : Controller
     {
         private readonly ResidenteService _residenteService;
@@ -92,6 +93,8 @@ namespace proyecto_programacion_avanzada.Controllers
 
                 _residenteService.Agregar(dto);
 
+                TempData["Success"] = "Residente registrado exitosamente.";
+
                 return RedirectToAction("Index");
             }
 
@@ -146,6 +149,7 @@ namespace proyecto_programacion_avanzada.Controllers
                     _usuarioService.Actualizar(usuario);
                 }
 
+                TempData["Success"] = "Residente actualizado exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -181,6 +185,8 @@ namespace proyecto_programacion_avanzada.Controllers
             _residenteService.Eliminar(id);
 
             _usuarioService.Eliminar(residente.IdUsuario);
+
+            TempData["Success"] = "Residente eliminado exitosamente.";
 
             return RedirectToAction("Index");
         }
