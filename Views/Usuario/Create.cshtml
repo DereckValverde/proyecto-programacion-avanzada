@@ -1,5 +1,5 @@
-﻿@model proyecto_programacion_avanzada.ViewModels.Usuario.UsuarioCreateViewModel
-@using proyecto_programacion_avanzada.Common.Enums
+﻿@model Condominio.Application.ViewModels.Usuario.UsuarioCreateViewModel
+@using Condominio.Domain.Enums
 
 @{
     ViewBag.Title = "Crear Usuario";
@@ -99,6 +99,8 @@
                         new { @class = "form-control" }
                     )
 
+                    @Html.ValidationMessageFor(x => x.IdVivienda, "", new { @class = "text-danger" })
+
                 </div>
 
             </div>
@@ -137,11 +139,83 @@
 
         }
 
+        function mostrarMensaje(nombreCampo, mensaje) {
+
+            $("[data-valmsg-for='" + nombreCampo + "']")
+                .text(mensaje)
+                .removeClass("field-validation-valid")
+                .addClass("field-validation-error");
+
+        }
+
+        function limpiarMensaje(nombreCampo) {
+
+            $("[data-valmsg-for='" + nombreCampo + "']")
+                .text("")
+                .removeClass("field-validation-error")
+                .addClass("field-validation-valid");
+
+        }
+
+        function validarResidente() {
+
+            var rol = $("#Rol option:selected").text();
+
+            if (rol !== "Residente") {
+
+                return true;
+
+            }
+
+            var valido = true;
+
+            if ($("#FechaIngreso").val() === "") {
+
+                mostrarMensaje("FechaIngreso", "La fecha de ingreso es obligatoria para un residente.");
+                valido = false;
+
+            }
+            else {
+
+                limpiarMensaje("FechaIngreso");
+
+            }
+
+            if ($("#IdVivienda").val() === "") {
+
+                mostrarMensaje("IdVivienda", "Debe seleccionar una vivienda.");
+                valido = false;
+
+            }
+            else {
+
+                limpiarMensaje("IdVivienda");
+
+            }
+
+            return valido;
+
+        }
+
         mostrarPanelResidente();
 
         $("#Rol").change(function () {
 
             mostrarPanelResidente();
+
+            limpiarMensaje("FechaIngreso");
+
+            limpiarMensaje("IdVivienda");
+
+        });
+
+        $("form").on("submit", function (e) {
+
+            if (!validarResidente()) {
+
+                e.preventDefault();
+
+            }
 
         });
 

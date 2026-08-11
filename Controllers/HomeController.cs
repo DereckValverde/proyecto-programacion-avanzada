@@ -7,18 +7,18 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Web;
-using proyecto_programacion_avanzada.App_Start;
-using proyecto_programacion_avanzada.Common.Enums;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.Services.Interfaces;
-using proyecto_programacion_avanzada.ViewModels.Home;
-using proyecto_programacion_avanzada.ViewModels.Login;
-using proyecto_programacion_avanzada.ViewModels.Noticia;
+using Condominio.Identity;
+using Condominio.Domain.Enums;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.Services.Interfaces;
+using Condominio.Application.ViewModels.Home;
+using Condominio.Application.ViewModels.Login;
+using Condominio.Application.ViewModels.Noticia;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -61,6 +61,15 @@ namespace proyecto_programacion_avanzada.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login([Bind(Prefix = "Login")] LoginViewModel model)
         {
+            model = model ?? new LoginViewModel();
+
+            if (!ModelState.IsValid)
+            {
+                return View("Index", CargarModeloIndex(model));
+            }
+
+            TryValidateModel(model, "Login");
+
             if (!ModelState.IsValid)
             {
                 return View("Index", CargarModeloIndex(model));

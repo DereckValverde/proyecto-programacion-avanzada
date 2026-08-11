@@ -1,0 +1,31 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Condominio.Domain.Enums;
+
+namespace Condominio.Application.DTOs
+{
+    public class ResidenteDto
+    {
+        public int IdResidente { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Nombre { get; set; }
+
+        [Required]
+        public DateTime FechaIngreso { get; set; }
+
+        [Required]
+        public EstadoGeneral Estado { get; set; }
+
+        public string EstadoNombre => Estado.ToString();
+
+        public int IdUsuario { get; set; }
+
+        public int IdVivienda { get; set; }
+
+        public string NombreUsuario { get; set; }
+
+        public string NombreVivienda { get; set; }
+    }
+}

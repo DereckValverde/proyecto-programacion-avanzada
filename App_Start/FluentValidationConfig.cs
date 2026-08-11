@@ -1,8 +1,10 @@
-using System;
+﻿using System;
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.Mvc;
+using Condominio.Application.Validators;
 
-namespace proyecto_programacion_avanzada.App_Start
+namespace Condominio.Web.App_Start
 {
     public class FluentValidationConfig
     {
@@ -18,10 +20,12 @@ namespace proyecto_programacion_avanzada.App_Start
 
     public class FluentValidatorFactory : IValidatorFactory
     {
+        private static readonly Assembly ApplicationAssembly = typeof(LoginViewModelValidator).Assembly;
+
         public IValidator<T> GetValidator<T>()
         {
-            var validatorType = typeof(FluentValidatorFactory).Assembly.GetType(
-                "proyecto_programacion_avanzada.Validators." + typeof(T).Name + "Validator");
+            var validatorType = ApplicationAssembly.GetType(
+                "Condominio.Application.Validators." + typeof(T).Name + "Validator");
 
             return validatorType == null
                 ? null
@@ -30,8 +34,8 @@ namespace proyecto_programacion_avanzada.App_Start
 
         public IValidator GetValidator(Type type)
         {
-            var validatorType = typeof(FluentValidatorFactory).Assembly.GetType(
-                "proyecto_programacion_avanzada.Validators." + type.Name + "Validator");
+            var validatorType = ApplicationAssembly.GetType(
+                "Condominio.Application.Validators." + type.Name + "Validator");
 
             return validatorType == null
                 ? null

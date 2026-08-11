@@ -274,3 +274,31 @@ span.select2-container--bootstrap-5 {
 .table th:last-child {
     text-align: center;
 }
+
+/* Validación */
+.field-validation-error {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border-color: #dc3545;
+}
+
+.input-validation-error:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 .25rem rgba(220, 53, 69, .18);
+}
+
+.validation-summary-errors {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.validation-summary-errors li {
+    list-style: none;
+}

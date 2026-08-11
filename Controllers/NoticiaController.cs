@@ -1,17 +1,17 @@
-using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.Services.Interfaces;
-using proyecto_programacion_avanzada.ViewModels.Noticia;
+﻿using Condominio.Application.DTOs;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.Services.Interfaces;
+using Condominio.Application.ViewModels.Noticia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
     [Authorize(Roles = "Administrador")]
     public class NoticiaController : Controller

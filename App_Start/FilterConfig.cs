@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada
+namespace Condominio.Web
 {
     public class FilterConfig
     {
