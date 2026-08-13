@@ -1,0 +1,51 @@
+﻿@model Condominio.Application.ViewModels.Pago.PagoDetailsViewModel
+
+@{
+    ViewBag.Title = "Detalle del Pago";
+}
+
+<div class="card shadow mx-auto" style="max-width: 640px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-money-bill-wave me-2"></i>Detalle del Pago</h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="dl-condominio">
+            <dt>Vivienda</dt>
+            <dd>@Model.NombreVivienda</dd>
+
+            <dt>Periodo</dt>
+            <dd>@Model.Periodo</dd>
+
+            <dt>Monto</dt>
+            <dd>@Model.Monto.ToString("C")</dd>
+
+            <dt>Fecha de Pago</dt>
+            <dd>@Model.FechaPago.ToString("d")</dd>
+
+            <dt>Estado</dt>
+            <dd>
+                @if (Model.Estado == Condominio.Domain.Enums.EstadoPago.Pagado)
+                {
+                    <span class="badge bg-success">@Model.EstadoNombre</span>
+                }
+                else if (Model.Estado == Condominio.Domain.Enums.EstadoPago.Atrasado)
+                {
+                    <span class="badge bg-danger">@Model.EstadoNombre</span>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark">@Model.EstadoNombre</span>
+                }
+            </dd>
+        </dl>
+
+        <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+            <a href="@Url.Action("Edit", new { id = Model.IdPago })" class="btn btn-primary">
+                <i class="fas fa-edit me-1"></i> Editar
+            </a>
+
+            <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+        </div>
+    </div>
+</div>

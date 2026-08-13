@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5A7B3F29-1C4E-4D5A-9E2B-6C3D4E5F6002}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Condominio.Application</RootNamespace>
+    <AssemblyName>Condominio.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.3\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.4\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DTOs\AreaComunDto.cs" />
+    <Compile Include="DTOs\IncidenciaDto.cs" />
+    <Compile Include="DTOs\NoticiaDto.cs" />
+    <Compile Include="DTOs\PagoDto.cs" />
+    <Compile Include="DTOs\ReservaDto.cs" />
+    <Compile Include="DTOs\ResidenteDto.cs" />
+    <Compile Include="DTOs\UsuarioDto.cs" />
+    <Compile Include="DTOs\VisitanteDto.cs" />
+    <Compile Include="DTOs\ViviendaDto.cs" />
+    <Compile Include="Mappings\AutoMapperConfig.cs" />
+    <Compile Include="Mappings\MappingProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Interfaces\INoticiaRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IResidenteRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IUsuarioRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IVisitanteRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IViviendaRepository.cs" />
+    <Compile Include="Services\Implementations\NoticiaService.cs" />
+    <Compile Include="Services\Implementations\ResidenteService.cs" />
+    <Compile Include="Services\Implementations\UsuarioService.cs" />
+    <Compile Include="Services\Implementations\VisitanteService.cs" />
+    <Compile Include="Services\Implementations\ViviendaService.cs" />
+    <Compile Include="Services\Interfaces\INoticiaService.cs" />
+    <Compile Include="Services\Interfaces\IResidenteService.cs" />
+    <Compile Include="Services\Interfaces\IUsuarioService.cs" />
+    <Compile Include="Services\Interfaces\IVisitanteService.cs" />
+    <Compile Include="Services\Interfaces\IViviendaService.cs" />
+    <Compile Include="Validators\LoginViewModelValidator.cs" />
+    <Compile Include="Validators\NoticiaCreateViewModelValidator.cs" />
+    <Compile Include="Validators\NoticiaEditViewModelValidator.cs" />
+    <Compile Include="Validators\UsuarioCreateViewModelValidator.cs" />
+    <Compile Include="Validators\UsuarioEditViewModelValidator.cs" />
+    <Compile Include="ViewModels\HomeIndexViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\NoticiaCreateViewModel.cs" />
+    <Compile Include="ViewModels\NoticiaDetailsViewModel.cs" />
+    <Compile Include="ViewModels\NoticiaEditViewModel.cs" />
+    <Compile Include="ViewModels\NoticiaListViewModel.cs" />
+    <Compile Include="ViewModels\ResidenteCreateViewModel.cs" />
+    <Compile Include="ViewModels\ResidenteDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ResidenteEditViewModel.cs" />
+    <Compile Include="ViewModels\ResidenteListViewModel.cs" />
+    <Compile Include="ViewModels\UsuarioCreateViewModel.cs" />
+    <Compile Include="ViewModels\UsuarioDetailsViewModel.cs" />
+    <Compile Include="ViewModels\UsuarioEditViewModel.cs" />
+    <Compile Include="ViewModels\UsuarioListViewModel.cs" />
+    <Compile Include="ViewModels\VisitanteDetailsViewModel.cs" />
+    <Compile Include="ViewModels\VisitanteEditViewModel.cs" />
+    <Compile Include="ViewModels\VisitanteIngresoViewModel.cs" />
+    <Compile Include="ViewModels\VisitanteListViewModel.cs" />
+    <Compile Include="ViewModels\ViviendaCreateViewModel.cs" />
+    <Compile Include="ViewModels\ViviendaDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ViviendaEditViewModel.cs" />
+    <Compile Include="ViewModels\ViviendaListViewModel.cs" />
+	<Compile Include="Repositories\Interfaces\IPagoRepository.cs" />
+	<Compile Include="Services\Implementations\PagoService.cs" />
+	<Compile Include="Services\Interfaces\IPagoService.cs" />
+	<Compile Include="Validators\PagoCreateViewModelValidator.cs" />
+	<Compile Include="Validators\PagoEditViewModelValidator.cs" />
+	<Compile Include="ViewModels\PagoCreateViewModel.cs" />
+	<Compile Include="ViewModels\PagoDetailsViewModel.cs" />
+	<Compile Include="ViewModels\PagoEditViewModel.cs" />
+	<Compile Include="ViewModels\PagoListViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Condominio.Domain\Condominio.Domain.csproj">
+      <Project>{5A7B3F29-1C4E-4D5A-9E2B-6C3D4E5F6001}</Project>
+      <Name>Condominio.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

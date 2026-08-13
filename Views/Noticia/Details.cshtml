@@ -1,0 +1,47 @@
+﻿@model Condominio.Application.ViewModels.Noticia.NoticiaDetailsViewModel
+
+@{
+    ViewBag.Title = "Detalles de Noticia";
+}
+
+<div class="card shadow mx-auto" style="max-width: 760px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-bullhorn me-2"></i>Detalles de la Noticia</h2>
+    </div>
+
+    <div class="card-body">
+        <div class="mb-3">
+            @if (Model.EsAlerta)
+            {
+                <span class="badge bg-warning text-dark">Alerta</span>
+            }
+            else
+            {
+                <span class="badge bg-info">Noticia</span>
+            }
+        </div>
+
+        <dl class="dl-condominio">
+            <dt>Título</dt>
+            <dd>@Model.Titulo</dd>
+
+            <dt>Contenido</dt>
+            <dd style="white-space: pre-wrap;">@Model.Contenido</dd>
+
+            <dt>Fecha de publicación</dt>
+            <dd>@Model.FechaPublicacion.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt>Autor</dt>
+            <dd>@Model.Autor</dd>
+        </dl>
+
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <a href="@Url.Action("Edit", new { id = Model.IdNoticia })" class="btn btn-warning">
+                <i class="fas fa-edit me-1"></i> Editar
+            </a>
+
+            <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+        </div>
+    </div>
+</div>
+
