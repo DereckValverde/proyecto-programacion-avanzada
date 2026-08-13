@@ -76,7 +76,9 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Implementations\AreaComunRepository.cs" />
     <Compile Include="Repositories\Implementations\NoticiaRepository.cs" />
+    <Compile Include="Repositories\Implementations\ReservaRepository.cs" />
     <Compile Include="Repositories\Implementations\ResidenteRepository.cs" />
     <Compile Include="Repositories\Implementations\UsuarioRepository.cs" />
     <Compile Include="Repositories\Implementations\VisitanteRepository.cs" />

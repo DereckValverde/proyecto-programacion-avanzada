@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Condominio.Domain.Enums;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Condominio.Domain.Enums;
+using System.Web.Mvc;
 
-namespace Condominio.Application.DTOs
+namespace Condominio.Application.ViewModels.Reserva
 {
-    public class ReservaDto
+    public class ReservaCreateViewModel
     {
-        public int IdReserva { get; set; }
-
         [Required]
+        [DataType(DataType.Date)]
         public DateTime FechaReserva { get; set; }
 
         [Required]
@@ -17,17 +18,16 @@ namespace Condominio.Application.DTOs
         [Required]
         public TimeSpan HoraFin { get; set; }
 
-        [Required]
         public EstadoReserva Estado { get; set; }
 
-        public string EstadoNombre => Estado.ToString();
-
+        [Required]
         public int IdVivienda { get; set; }
 
+        [Required]
         public int IdArea { get; set; }
 
-        public string NombreVivienda { get; set; }
+        public IEnumerable<SelectListItem> Viviendas { get; set; }
 
-        public string NombreArea { get; set; }
+        public IEnumerable<SelectListItem> AreasComunes { get; set; }
     }
 }

@@ -166,6 +166,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NoticiaController.cs" />
+    <Compile Include="Controllers\ReservaController.cs" />
     <Compile Include="Controllers\ResidenteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
@@ -254,6 +255,11 @@
     <Content Include="Views\Visitante\Index.cshtml" />
     <Content Include="Views\Visitante\RegistrarSalida.cshtml" />
     <Content Include="Views\Shared\_Noticias.cshtml" />
+    <Content Include="Views\Reserva\Index.cshtml" />
+    <Content Include="Views\Reserva\Create.cshtml" />
+    <Content Include="Views\Reserva\Edit.cshtml" />
+    <Content Include="Views\Reserva\Details.cshtml" />
+    <Content Include="Views\Reserva\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
