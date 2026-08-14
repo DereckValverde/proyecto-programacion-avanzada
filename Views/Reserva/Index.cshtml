@@ -61,7 +61,18 @@
                                     @Html.ActionLink(" ", "Details", new { id = item.IdReserva },
                                         new { @class = "btn btn-sm btn-outline-info btn-action fas fa-eye", title = "Detalles" })
 
-                                    @if (ViewBag.EsResidente != true)
+                                    @if (ViewBag.EsResidente == true)
+                                    {
+                                        if (item.Estado == Condominio.Domain.Enums.EstadoReserva.Pendiente)
+                                        {
+                                            @Html.ActionLink(" ", "Edit", new { id = item.IdReserva },
+                                                new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })
+
+                                            @Html.ActionLink(" ", "Cancelar", new { id = item.IdReserva },
+                                                new { @class = "btn btn-sm btn-outline-warning btn-action fas fa-times", title = "Cancelar" })
+                                        }
+                                    }
+                                    else
                                     {
                                         @Html.ActionLink(" ", "Edit", new { id = item.IdReserva },
                                             new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })

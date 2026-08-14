@@ -163,6 +163,7 @@ namespace Condominio.Web.Controllers
             if (EsResidente)
             {
                 model.IdVivienda = ObtenerIdViviendaResidente();
+                model.Estado = EstadoPago.Pendiente;
             }
 
             if (ModelState.IsValid)
@@ -173,7 +174,7 @@ namespace Condominio.Web.Controllers
                 {
                     _pagoService.Agregar(dto);
 
-                    TempData["Success"] = "Pago registrado exitosamente.";
+                    TempData["Success"] = "Pago registrado exitosamente. Queda pendiente de confirmación por el administrador.";
 
                     return RedirectToAction("Index");
                 }
@@ -193,16 +194,16 @@ namespace Condominio.Web.Controllers
         // GET: Pago/Edit/5
         public ActionResult Edit(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para editar pagos.";
+                return RedirectToAction("Index");
+            }
+
             var pagoDto = _pagoService.ObtenerPorId(id);
 
             if (pagoDto == null)
                 return HttpNotFound();
-
-            if (EsResidente && pagoDto.IdVivienda != ObtenerIdViviendaResidente())
-            {
-                TempData["Error"] = "No tiene permisos para editar este pago.";
-                return RedirectToAction("Index");
-            }
 
             var model = AutoMapperConfig.Mapper.Map<PagoEditViewModel>(pagoDto);
 
@@ -220,15 +221,8 @@ namespace Condominio.Web.Controllers
         {
             if (EsResidente)
             {
-                var idViviendaResidente = ObtenerIdViviendaResidente();
-
-                if (model.IdVivienda != idViviendaResidente)
-                {
-                    TempData["Error"] = "No tiene permisos para editar este pago.";
-                    return RedirectToAction("Index");
-                }
-
-                model.IdVivienda = idViviendaResidente;
+                TempData["Error"] = "No tiene permisos para editar pagos.";
+                return RedirectToAction("Index");
             }
 
             if (ModelState.IsValid)
@@ -259,16 +253,16 @@ namespace Condominio.Web.Controllers
         // GET: Pago/Delete/5
         public ActionResult Delete(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para eliminar pagos.";
+                return RedirectToAction("Index");
+            }
+
             var pagoDto = _pagoService.ObtenerPorId(id);
 
             if (pagoDto == null)
                 return HttpNotFound();
-
-            if (EsResidente && pagoDto.IdVivienda != ObtenerIdViviendaResidente())
-            {
-                TempData["Error"] = "No tiene permisos para eliminar este pago.";
-                return RedirectToAction("Index");
-            }
 
             var model = AutoMapperConfig.Mapper.Map<PagoDetailsViewModel>(pagoDto);
 
@@ -280,16 +274,16 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para eliminar pagos.";
+                return RedirectToAction("Index");
+            }
+
             var pago = _pagoService.ObtenerPorId(id);
 
             if (pago == null)
                 return HttpNotFound();
-
-            if (EsResidente && pago.IdVivienda != ObtenerIdViviendaResidente())
-            {
-                TempData["Error"] = "No tiene permisos para eliminar este pago.";
-                return RedirectToAction("Index");
-            }
 
             _pagoService.Eliminar(id);
 

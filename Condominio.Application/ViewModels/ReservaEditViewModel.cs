@@ -10,22 +10,17 @@ namespace Condominio.Application.ViewModels.Reserva
     {
         public int IdReserva { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         public DateTime FechaReserva { get; set; }
 
-        [Required]
         public TimeSpan HoraInicio { get; set; }
 
-        [Required]
         public TimeSpan HoraFin { get; set; }
 
         public EstadoReserva Estado { get; set; }
 
-        [Required]
         public int IdVivienda { get; set; }
 
-        [Required]
         public int IdArea { get; set; }
 
         public IEnumerable<SelectListItem> Viviendas { get; set; }

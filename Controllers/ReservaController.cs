@@ -4,6 +4,7 @@ using Condominio.Infrastructure.Repositories.Implementations;
 using Condominio.Application.Mappings;
 using Condominio.Application.Services.Implementations;
 using Condominio.Application.ViewModels.Reserva;
+using Condominio.Domain.Enums;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -142,6 +143,7 @@ namespace Condominio.Web.Controllers
             if (EsResidente)
             {
                 model.IdVivienda = ObtenerIdViviendaResidente();
+                model.Estado = EstadoReserva.Pendiente;
             }
 
             if (ModelState.IsValid)
@@ -152,7 +154,7 @@ namespace Condominio.Web.Controllers
 
                     _reservaService.Agregar(dto);
 
-                    TempData["Success"] = "Reserva registrada exitosamente.";
+                    TempData["Success"] = "Reserva registrada exitosamente. Queda pendiente de aprobación por el administrador.";
 
                     return RedirectToAction("Index");
                 }
@@ -183,6 +185,12 @@ namespace Condominio.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            if (EsResidente && reservaDto.Estado != EstadoReserva.Pendiente)
+            {
+                TempData["Error"] = "Solo puede editar reservas en estado Pendiente.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<ReservaEditViewModel>(reservaDto);
 
             ViewBag.EsResidente = EsResidente;
@@ -201,13 +209,25 @@ namespace Condominio.Web.Controllers
             {
                 var idViviendaResidente = ObtenerIdViviendaResidente();
 
-                if (model.IdVivienda != idViviendaResidente)
+                var reservaActual = _reservaService.ObtenerPorId(model.IdReserva);
+
+                if (reservaActual == null)
+                    return HttpNotFound();
+
+                if (reservaActual.IdVivienda != idViviendaResidente)
                 {
                     TempData["Error"] = "No tiene permisos para editar esta reserva.";
                     return RedirectToAction("Index");
                 }
 
+                if (reservaActual.Estado != EstadoReserva.Pendiente)
+                {
+                    TempData["Error"] = "Solo puede editar reservas en estado Pendiente.";
+                    return RedirectToAction("Index");
+                }
+
                 model.IdVivienda = idViviendaResidente;
+                model.Estado = EstadoReserva.Pendiente;
             }
 
             if (ModelState.IsValid)
@@ -238,16 +258,16 @@ namespace Condominio.Web.Controllers
         // GET: Reserva/Delete/5
         public ActionResult Delete(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para eliminar reservas. Puede cancelar la reserva desde el listado.";
+                return RedirectToAction("Index");
+            }
+
             var reservaDto = _reservaService.ObtenerPorId(id);
 
             if (reservaDto == null)
                 return HttpNotFound();
-
-            if (EsResidente && reservaDto.IdVivienda != ObtenerIdViviendaResidente())
-            {
-                TempData["Error"] = "No tiene permisos para eliminar esta reserva.";
-                return RedirectToAction("Index");
-            }
 
             var model = AutoMapperConfig.Mapper.Map<ReservaDetailsViewModel>(reservaDto);
 
@@ -259,20 +279,88 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para eliminar reservas. Puede cancelar la reserva desde el listado.";
+                return RedirectToAction("Index");
+            }
+
             var reservaDto = _reservaService.ObtenerPorId(id);
 
             if (reservaDto == null)
                 return HttpNotFound();
 
-            if (EsResidente && reservaDto.IdVivienda != ObtenerIdViviendaResidente())
-            {
-                TempData["Error"] = "No tiene permisos para eliminar esta reserva.";
-                return RedirectToAction("Index");
-            }
-
             _reservaService.Eliminar(id);
 
             TempData["Success"] = "Reserva eliminada exitosamente.";
+
+            return RedirectToAction("Index");
+        }
+
+        // GET: Reserva/Cancelar/5
+        public ActionResult Cancelar(int id)
+        {
+            if (!EsResidente)
+            {
+                TempData["Error"] = "Solo los residentes pueden cancelar reservas.";
+                return RedirectToAction("Index");
+            }
+
+            var reservaDto = _reservaService.ObtenerPorId(id);
+
+            if (reservaDto == null)
+                return HttpNotFound();
+
+            if (reservaDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para cancelar esta reserva.";
+                return RedirectToAction("Index");
+            }
+
+            if (reservaDto.Estado != EstadoReserva.Pendiente)
+            {
+                TempData["Error"] = "Solo puede cancelar reservas en estado Pendiente.";
+                return RedirectToAction("Index");
+            }
+
+            var model = AutoMapperConfig.Mapper.Map<ReservaDetailsViewModel>(reservaDto);
+
+            return View(model);
+        }
+
+        // POST: Reserva/Cancelar/5
+        [HttpPost, ActionName("Cancelar")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelarConfirmed(int id)
+        {
+            if (!EsResidente)
+            {
+                TempData["Error"] = "Solo los residentes pueden cancelar reservas.";
+                return RedirectToAction("Index");
+            }
+
+            var reservaDto = _reservaService.ObtenerPorId(id);
+
+            if (reservaDto == null)
+                return HttpNotFound();
+
+            if (reservaDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para cancelar esta reserva.";
+                return RedirectToAction("Index");
+            }
+
+            if (reservaDto.Estado != EstadoReserva.Pendiente)
+            {
+                TempData["Error"] = "Solo puede cancelar reservas en estado Pendiente.";
+                return RedirectToAction("Index");
+            }
+
+            reservaDto.Estado = EstadoReserva.Cancelada;
+
+            _reservaService.Actualizar(reservaDto);
+
+            TempData["Success"] = "Reserva cancelada exitosamente.";
 
             return RedirectToAction("Index");
         }
