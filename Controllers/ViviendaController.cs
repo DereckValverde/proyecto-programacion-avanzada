@@ -1,20 +1,17 @@
-﻿using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Interfaces;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.Services.Interfaces;
-using proyecto_programacion_avanzada.ViewModels;
-using proyecto_programacion_avanzada.ViewModels.Usuario;
-using proyecto_programacion_avanzada.ViewModels.Vivienda;
+﻿using Condominio.Application.DTOs;
+using Condominio.Application.Mappings;
+using Condominio.Application.Repositories.Interfaces;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.ViewModels.Vivienda;
+using Condominio.Domain.Entities;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
     public class ViviendaController : Controller
     {

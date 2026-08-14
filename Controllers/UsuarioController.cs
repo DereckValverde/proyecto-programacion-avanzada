@@ -1,16 +1,16 @@
-﻿using proyecto_programacion_avanzada.Common.Enums;
-using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Entities;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.ViewModels.Usuario;
+﻿using Condominio.Application.DTOs;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.ViewModels.Usuario;
+using Condominio.Domain.Entities;
+using Condominio.Domain.Enums;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
     public class UsuarioController : Controller
     {

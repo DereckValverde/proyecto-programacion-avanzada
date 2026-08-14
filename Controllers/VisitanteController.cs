@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.ViewModels.Visitante;
+﻿using Condominio.Application.DTOs;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.ViewModels.Visitante;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
     public class VisitanteController : Controller
     {

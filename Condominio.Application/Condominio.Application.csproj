@@ -117,15 +117,6 @@
     <Compile Include="ViewModels\ViviendaDetailsViewModel.cs" />
     <Compile Include="ViewModels\ViviendaEditViewModel.cs" />
     <Compile Include="ViewModels\ViviendaListViewModel.cs" />
-	<Compile Include="Repositories\Interfaces\IPagoRepository.cs" />
-	<Compile Include="Services\Implementations\PagoService.cs" />
-	<Compile Include="Services\Interfaces\IPagoService.cs" />
-	<Compile Include="Validators\PagoCreateViewModelValidator.cs" />
-	<Compile Include="Validators\PagoEditViewModelValidator.cs" />
-	<Compile Include="ViewModels\PagoCreateViewModel.cs" />
-	<Compile Include="ViewModels\PagoDetailsViewModel.cs" />
-	<Compile Include="ViewModels\PagoEditViewModel.cs" />
-	<Compile Include="ViewModels\PagoListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Condominio.Domain\Condominio.Domain.csproj">

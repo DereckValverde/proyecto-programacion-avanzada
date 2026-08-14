@@ -171,7 +171,6 @@
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Controllers\ViviendaController.cs" />
-	<Compile Include="Controllers\PagoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -261,11 +260,6 @@
     <Content Include="Views\Visitante\Index.cshtml" />
     <Content Include="Views\Visitante\RegistrarSalida.cshtml" />
     <Content Include="Views\Shared\_Noticias.cshtml" />
-    <Content Include="Views\Pago\Create.cshtml" />
-    <Content Include="Views\Pago\Delete.cshtml" />
-    <Content Include="Views\Pago\Details.cshtml" />
-    <Content Include="Views\Pago\Edit.cshtml" />
-    <Content Include="Views\Pago\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
