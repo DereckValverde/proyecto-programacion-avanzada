@@ -7,6 +7,7 @@ using Condominio.Application.ViewModels.Residente;
 using Condominio.Application.ViewModels.Usuario;
 using Condominio.Application.ViewModels.Vivienda;
 using Condominio.Application.ViewModels.Visitante;
+using Condominio.Application.ViewModels.Reserva;
 
 namespace Condominio.Application.Mappings
 {
@@ -138,6 +139,30 @@ namespace Condominio.Application.Mappings
                 .ReverseMap();
 
             CreateMap<Reserva, ReservaDto>()
+                .ForMember(dest => dest.NombreVivienda,
+                opt => opt.MapFrom(src =>
+                "Bloque " + src.Vivienda.Bloque + " - Vivienda " + src.Vivienda.Numero))
+                .ForMember(dest => dest.NombreArea,
+                opt => opt.MapFrom(src => src.AreaComun.Nombre));
+
+            CreateMap<ReservaDto, Reserva>()
+                .ForMember(dest => dest.Vivienda, opt => opt.Ignore())
+                .ForMember(dest => dest.AreaComun, opt => opt.Ignore());
+
+            CreateMap<ReservaDto, ReservaCreateViewModel>()
+                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
+                .ForMember(dest => dest.AreasComunes, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<ReservaDto, ReservaEditViewModel>()
+                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
+                .ForMember(dest => dest.AreasComunes, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<ReservaDto, ReservaListViewModel>()
+                .ReverseMap();
+
+            CreateMap<ReservaDto, ReservaDetailsViewModel>()
                 .ReverseMap();
 
             CreateMap<Visitante, VisitanteDto>()
