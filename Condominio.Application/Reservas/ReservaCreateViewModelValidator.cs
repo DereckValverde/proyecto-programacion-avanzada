@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using Condominio.Domain.Reservas;
 using System;
 

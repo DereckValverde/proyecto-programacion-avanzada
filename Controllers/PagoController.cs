@@ -1,4 +1,4 @@
-using Condominio.Application.Mappings;
+﻿using Condominio.Application.Mappings;
 using Condominio.Application.Pagos;
 using Condominio.Application.Viviendas;
 using Condominio.Domain.Pagos;

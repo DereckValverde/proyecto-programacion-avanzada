@@ -1,4 +1,4 @@
-namespace Condominio.Infrastructure.Migrations
+﻿namespace Condominio.Infrastructure.Migrations
 {
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;

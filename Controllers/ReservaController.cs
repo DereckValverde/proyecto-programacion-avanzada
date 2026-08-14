@@ -1,4 +1,4 @@
-using Condominio.Application.AreasComunes;
+﻿using Condominio.Application.AreasComunes;
 using Condominio.Application.Mappings;
 using Condominio.Application.Reservas;
 using Condominio.Application.Viviendas;

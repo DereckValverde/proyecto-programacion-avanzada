@@ -1,4 +1,4 @@
-using Condominio.Domain.Pagos;
+﻿using Condominio.Domain.Pagos;
 using FluentValidation;
 using System;
 
