@@ -1,15 +1,18 @@
-﻿using Condominio.Application.DTOs;
-using Condominio.Application.Mappings;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.ViewModels.Residente;
+﻿using AutoMapper;
+using Condominio.Application.DTOs;
 using Condominio.Infrastructure.DbContexts;
 using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.ViewModels;
+using Condominio.Application.ViewModels.Residente;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace Condominio.Web.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ResidenteController : Controller
     {
         private readonly ResidenteService _residenteService;
@@ -90,6 +93,8 @@ namespace Condominio.Web.Controllers
 
                 _residenteService.Agregar(dto);
 
+                TempData["Success"] = "Residente registrado exitosamente.";
+
                 return RedirectToAction("Index");
             }
 
@@ -144,6 +149,7 @@ namespace Condominio.Web.Controllers
                     _usuarioService.Actualizar(usuario);
                 }
 
+                TempData["Success"] = "Residente actualizado exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -179,6 +185,8 @@ namespace Condominio.Web.Controllers
             _residenteService.Eliminar(id);
 
             _usuarioService.Eliminar(residente.IdUsuario);
+
+            TempData["Success"] = "Residente eliminado exitosamente.";
 
             return RedirectToAction("Index");
         }

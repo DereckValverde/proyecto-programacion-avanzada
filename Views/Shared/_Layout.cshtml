@@ -1,18 +1,19 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Condominio</title>
     @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            @Html.ActionLink("Condominio", "Index", "Home", null, new { @class = "navbar-brand" })
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -35,18 +36,51 @@
                         }
                     }
                 </ul>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="navbar-text text-white me-3">
+                                <i class="fas fa-user-circle me-1"></i>@(User.Identity.Name)
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <i class="fas fa-sign-out-alt me-1"></i>Cerrar sesión
+                                </a>
+                            }
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>
-    <div class="container body-content">
+
+    <div class="container py-4">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger"><i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]</div>
+        }
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
 
+    <footer class="text-center text-muted mt-4 mb-3">
+        <p>&copy; @DateTime.Now.Year - Sistema de Gestión de Condominios</p>
+    </footer>
+
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

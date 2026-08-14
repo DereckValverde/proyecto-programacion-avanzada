@@ -1,33 +1,39 @@
 ﻿@model Condominio.Application.ViewModels.Usuario.UsuarioDetailsViewModel
 
-<h2>Detalles Usuario</h2>
+@{
+    ViewBag.Title = "Detalles Usuario";
+}
 
-<div>
-    <strong>Nombre:</strong>
-    @Model.Nombre
+<div class="card shadow mx-auto" style="max-width: 640px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-user-circle me-2"></i>Detalles Usuario</h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="dl-condominio">
+            <dt>Nombre</dt>
+            <dd>@Model.Nombre</dd>
+
+            <dt>Correo</dt>
+            <dd>@Model.Correo</dd>
+
+            <dt>Teléfono</dt>
+            <dd>@Model.Telefono</dd>
+
+            <dt>Rol</dt>
+            <dd><span class="badge bg-secondary">@Model.Rol</span></dd>
+
+            <dt>Estado</dt>
+            <dd><span class="badge bg-success">@Model.Estado</span></dd>
+        </dl>
+
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <a href="@Url.Action("Edit", new { id = Model.IdUsuario })" class="btn btn-warning">
+                <i class="fas fa-edit me-1"></i> Editar
+            </a>
+
+            <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+        </div>
+    </div>
 </div>
 
-<div>
-    <strong>Correo:</strong>
-    @Model.Correo
-</div>
-
-<div>
-    <strong>Teléfono:</strong>
-    @Model.Telefono
-</div>
-
-<div>
-    <strong>Rol:</strong>
-    @Model.Rol
-</div>
-
-<div>
-    <strong>Estado:</strong>
-    @Model.Estado
-</div>
-
-<br />
-
-@Html.ActionLink("Volver", "Index", null,
-new { @class = "btn btn-secondary" })

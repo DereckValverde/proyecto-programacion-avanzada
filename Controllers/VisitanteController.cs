@@ -1,9 +1,10 @@
-﻿using Condominio.Application.DTOs;
+﻿using AutoMapper;
+using Condominio.Application.DTOs;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
 using Condominio.Application.Mappings;
 using Condominio.Application.Services.Implementations;
 using Condominio.Application.ViewModels.Visitante;
-using Condominio.Infrastructure.DbContexts;
-using Condominio.Infrastructure.Repositories.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 
 namespace Condominio.Web.Controllers
 {
+    [Authorize(Roles = "Administrador, Residente, Guarda")]
     public class VisitanteController : Controller
     {
         private readonly VisitanteService _visitanteService;
@@ -40,8 +42,6 @@ namespace Condominio.Web.Controllers
         }
 
         // GET: Visitante
-        // Listado / historial de visitantes. filtro = "activos" muestra únicamente
-        // quienes se encuentran actualmente dentro del condominio.
         public ActionResult Index(string filtro)
         {
             var visitantesDto = filtro == "activos"
@@ -69,7 +69,6 @@ namespace Condominio.Web.Controllers
         }
 
         // GET: Visitante/Create
-        // Formulario para registrar el ingreso de un visitante o proveedor.
         public ActionResult Create()
         {
             CargarCombos();
@@ -97,6 +96,8 @@ namespace Condominio.Web.Controllers
                     try
                     {
                         _visitanteService.RegistrarIngreso(dto);
+
+                        TempData["Success"] = "Ingreso registrado exitosamente.";
 
                         return RedirectToAction("Index");
                     }
@@ -147,6 +148,8 @@ namespace Condominio.Web.Controllers
                 {
                     _visitanteService.Actualizar(dto);
 
+                    TempData["Success"] = "Visitante actualizado exitosamente.";
+
                     return RedirectToAction("Index");
                 }
                 catch (InvalidOperationException ex)
@@ -161,7 +164,6 @@ namespace Condominio.Web.Controllers
         }
 
         // GET: Visitante/RegistrarSalida/5
-        // Pantalla de confirmación para registrar la salida de un visitante activo.
         public ActionResult RegistrarSalida(int id)
         {
             var visitanteDto = _visitanteService.ObtenerPorId(id);
@@ -188,6 +190,8 @@ namespace Condominio.Web.Controllers
             try
             {
                 _visitanteService.RegistrarSalida(id);
+
+                TempData["Success"] = "Salida registrada exitosamente.";
             }
             catch (InvalidOperationException ex)
             {
@@ -221,6 +225,8 @@ namespace Condominio.Web.Controllers
                 return HttpNotFound();
 
             _visitanteService.Eliminar(id);
+
+            TempData["Success"] = "Visitante eliminado exitosamente.";
 
             return RedirectToAction("Index");
         }

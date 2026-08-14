@@ -1,18 +1,22 @@
 ﻿using Condominio.Application.DTOs;
-using Condominio.Application.Mappings;
-using Condominio.Application.Repositories.Interfaces;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.ViewModels.Vivienda;
-using Condominio.Domain.Entities;
 using Condominio.Infrastructure.DbContexts;
 using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Repositories.Interfaces;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.Services.Interfaces;
+using Condominio.Application.ViewModels;
+using Condominio.Application.ViewModels.Usuario;
+using Condominio.Application.ViewModels.Vivienda;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Condominio.Web.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ViviendaController : Controller
     {
 
@@ -54,7 +58,7 @@ namespace Condominio.Web.Controllers
         //Get: Vivienda/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ViviendaCreateViewModel());
         }
 
         //Post Vivienda/Create
@@ -67,6 +71,8 @@ namespace Condominio.Web.Controllers
                 var dto = AutoMapperConfig.Mapper.Map<ViviendaDto>(model);
 
                 _viviendaService.Agregar(dto);
+
+                TempData["Success"] = "Vivienda registrada exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -100,6 +106,8 @@ namespace Condominio.Web.Controllers
                 var dto = AutoMapperConfig.Mapper.Map<ViviendaDto>(model);
 
                 _viviendaService.Actualizar(dto);
+
+                TempData["Success"] = "Vivienda actualizada exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -140,6 +148,8 @@ namespace Condominio.Web.Controllers
 
 
             _viviendaService.Eliminar(id);
+
+            TempData["Success"] = "Vivienda eliminada exitosamente.";
 
             return RedirectToAction("Index");
         }

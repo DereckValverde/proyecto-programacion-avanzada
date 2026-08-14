@@ -1,87 +1,76 @@
-﻿﻿@using Condominio.Domain.Enums;
+﻿@using Condominio.Domain.Enums;
 @model IEnumerable<Condominio.Application.ViewModels.Usuario.UsuarioListViewModel>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 @{
     ViewBag.Title = "Usuarios";
 }
 
-<!--Contenedor Principal-->
-<div class="container-fluid d-flex flex-column p-5 gap-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="fas fa-users me-2"></i>Gestión de Usuarios</h2>
 
-    <div>
-        @Html.ActionLink(
-            " ",
-            "Index",
-            null,
-            new
-            {
-                @class = "bi bi-arrow-left-circle text-danger fs-4"
-            }
-        )
+    <a href="@Url.Action("Create")" class="btn btn-primary">
+        <i class="fas fa-user-plus me-1"></i>Nuevo Usuario
+    </a>
+</div>
 
-    </div>
-
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Gestión de Usuarios</h2>
-
-        @Html.ActionLink(
-            " Agregar Usuario",
-            "Create",
-            null,
-            new
-            {
-                @class = "btn btn-success rounded-1 px-3 py-2 shadow-sm bi bi-person-plus-fill"
-            }
-        )
-    </div>
-
-
-    <table class="table table-striped table-bordered text-center">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Teléfono</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Nombre</td>
-                    <td>@item.Correo</td>
-                    <td>@item.Telefono</td>
-                    <td>@item.Rol</td>
-                    <td>
-                        @if (item.Estado == EstadoGeneral.Activo)
+<div class="card shadow">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <i class="fas fa-users"></i>
+                No hay usuarios registrados.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
                         {
-                            <span class="text-success fw-semibold">@item.Estado</span>
+                            <tr>
+                                <td class="fw-semibold">@item.Nombre</td>
+                                <td>@item.Correo</td>
+                                <td>@item.Telefono</td>
+                                <td>
+                                    <span class="badge bg-secondary">@item.RolNombre</span>
+                                </td>
+                                <td>
+                                    @if (item.Estado == EstadoGeneral.Activo)
+                                    {
+                                        <span class="badge bg-success">@item.EstadoNombre</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">@item.EstadoNombre</span>
+                                    }
+                                </td>
+                                <td class="text-end text-nowrap">
+                                    @Html.ActionLink(" ", "Edit", new { id = item.IdUsuario },
+                                        new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })
+
+                                    @Html.ActionLink(" ", "Details", new { id = item.IdUsuario },
+                                        new { @class = "btn btn-sm btn-outline-info btn-action fas fa-eye", title = "Detalles" })
+
+                                    @Html.ActionLink(" ", "Delete", new { id = item.IdUsuario },
+                                        new { @class = "btn btn-sm btn-outline-danger btn-action fas fa-trash-alt", title = "Eliminar" })
+                                </td>
+                            </tr>
                         }
-                        else
-                        {
-                            <span class="text-danger fw-semibold">@item.Estado</span>
-
-                        }
-                    </td>
-
-                    <td>
-                        @Html.ActionLink("Editar", "Edit", new { id = item.IdUsuario },
-                        new { @class = "btn btn-warning btn-sm" })
-
-                        @Html.ActionLink("Detalles", "Details", new { id = item.IdUsuario },
-                        new { @class = "btn btn-info btn-sm" })
-
-                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdUsuario },
-                        new { @class = "btn btn-danger btn-sm" })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 </div>
