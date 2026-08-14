@@ -100,27 +100,6 @@ namespace Condominio.Application.Mappings
                 .ForMember(dest => dest.Incidencias, opt => opt.Ignore());
 
 
-            CreateMap<ResidenteDto, ResidenteCreateViewModel>()
-                .ForMember(dest => dest.Usuarios, opt => opt.Ignore())
-                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
-                .ReverseMap();
-
-            CreateMap<ResidenteDto, ResidenteEditViewModel>()
-                .ForMember(dest => dest.Usuarios, opt => opt.Ignore())
-                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
-                .ReverseMap();
-
-            CreateMap<ResidenteDto, ResidenteListViewModel>()
-                .ForMember(dest => dest.Vivienda,
-                    opt => opt.MapFrom(src => src.NombreVivienda));
-
-            CreateMap<ResidenteDto, ResidenteDetailsViewModel>()
-                .ForMember(dest => dest.NombreUsuario,
-                opt => opt.MapFrom(src => src.NombreUsuario))
-                .ForMember(dest => dest.NombreVivienda,
-                opt => opt.MapFrom(src => src.NombreVivienda));
-
-
             CreateMap<Pago, PagoDto>()
                 .ForMember(dest => dest.NombreVivienda,
                     opt => opt.MapFrom(src =>

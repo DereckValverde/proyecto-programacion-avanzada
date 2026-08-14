@@ -104,13 +104,7 @@
     <Compile Include="Reservas\ReservaListViewModel.cs" />
     <Compile Include="Reservas\ReservaService.cs" />
     <Compile Include="Residentes\IResidenteRepository.cs" />
-    <Compile Include="Residentes\IResidenteService.cs" />
-    <Compile Include="Residentes\ResidenteCreateViewModel.cs" />
-    <Compile Include="Residentes\ResidenteDetailsViewModel.cs" />
     <Compile Include="Residentes\ResidenteDto.cs" />
-    <Compile Include="Residentes\ResidenteEditViewModel.cs" />
-    <Compile Include="Residentes\ResidenteListViewModel.cs" />
-    <Compile Include="Residentes\ResidenteService.cs" />
     <Compile Include="Usuarios\IUsuarioRepository.cs" />
     <Compile Include="Usuarios\IUsuarioService.cs" />
     <Compile Include="Usuarios\UsuarioCreateViewModel.cs" />
