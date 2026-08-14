@@ -1,10 +1,8 @@
-﻿using Condominio.Application.DTOs;
-using Condominio.Infrastructure.DbContexts;
-using Condominio.Infrastructure.Repositories.Implementations;
 using Condominio.Application.Mappings;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.Services.Interfaces;
-using Condominio.Application.ViewModels.Noticia;
+using Condominio.Application.Noticias;
+using Condominio.Domain.Noticias;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿@model Condominio.Application.ViewModels.Reserva.ReservaDetailsViewModel
+@model Condominio.Application.Reservas.ReservaDetailsViewModel
 
 @{
     ViewBag.Title = "Detalle de la Reserva";
@@ -25,11 +25,11 @@
 
             <dt>Estado</dt>
             <dd>
-                @if (Model.Estado == Condominio.Domain.Enums.EstadoReserva.Confirmada)
+                @if (Model.Estado == Condominio.Domain.Reservas.EstadoReserva.Confirmada)
                 {
                     <span class="badge bg-success">@Model.Estado</span>
                 }
-                else if (Model.Estado == Condominio.Domain.Enums.EstadoReserva.Cancelada)
+                else if (Model.Estado == Condominio.Domain.Reservas.EstadoReserva.Cancelada)
                 {
                     <span class="badge bg-danger">@Model.Estado</span>
                 }

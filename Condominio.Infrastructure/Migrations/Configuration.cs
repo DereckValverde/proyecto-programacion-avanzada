@@ -1,9 +1,13 @@
-﻿namespace Condominio.Infrastructure.Migrations
+namespace Condominio.Infrastructure.Migrations
 {
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using Condominio.Domain.Enums;
-    using Condominio.Domain.Entities;
+    using Condominio.Domain.Identity;
+    using Condominio.Domain.Noticias;
+    using Condominio.Domain.Residentes;
+    using Condominio.Domain.Shared;
+    using Condominio.Domain.Usuarios;
+    using Condominio.Domain.Viviendas;
     using Condominio.Infrastructure.DbContexts;
     using System;
     using System.Data.Entity.Migrations;

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Condominio.Application.ViewModels.Reserva.ReservaListViewModel>
+@model IEnumerable<Condominio.Application.Reservas.ReservaListViewModel>
 
 @{
     ViewBag.Title = "Reservas";
@@ -44,11 +44,11 @@
                                 <td>@item.FechaReserva.ToString("d")</td>
                                 <td>@item.HoraInicio.ToString(@"hh\:mm") - @item.HoraFin.ToString(@"hh\:mm")</td>
                                 <td>
-                                    @if (item.Estado == Condominio.Domain.Enums.EstadoReserva.Confirmada)
+                                    @if (item.Estado == Condominio.Domain.Reservas.EstadoReserva.Confirmada)
                                     {
                                         <span class="badge bg-success">@item.EstadoNombre</span>
                                     }
-                                    else if (item.Estado == Condominio.Domain.Enums.EstadoReserva.Cancelada)
+                                    else if (item.Estado == Condominio.Domain.Reservas.EstadoReserva.Cancelada)
                                     {
                                         <span class="badge bg-danger">@item.EstadoNombre</span>
                                     }
@@ -63,7 +63,7 @@
 
                                     @if (ViewBag.EsResidente == true)
                                     {
-                                        if (item.Estado == Condominio.Domain.Enums.EstadoReserva.Pendiente)
+                                        if (item.Estado == Condominio.Domain.Reservas.EstadoReserva.Pendiente)
                                         {
                                             @Html.ActionLink(" ", "Edit", new { id = item.IdReserva },
                                                 new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })

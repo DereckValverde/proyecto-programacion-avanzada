@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Condominio.Domain.Entities;
+using Condominio.Domain.Identity;
+using Condominio.Domain.Usuarios;
 using Condominio.Infrastructure.DbContexts;
 
 namespace Condominio.Identity

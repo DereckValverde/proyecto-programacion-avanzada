@@ -1,10 +1,11 @@
-﻿using Condominio.Application.DTOs;
 using Condominio.Application.Mappings;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.ViewModels.Pago;
-using Condominio.Domain.Enums;
+using Condominio.Application.Pagos;
+using Condominio.Application.Viviendas;
+using Condominio.Domain.Pagos;
+using Condominio.Domain.Residentes;
+using Condominio.Domain.Viviendas;
 using Condominio.Infrastructure.DbContexts;
-using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Infrastructure.Repositories;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;

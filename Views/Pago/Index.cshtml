@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Condominio.Application.ViewModels.Pago.PagoListViewModel>
+@model IEnumerable<Condominio.Application.Pagos.PagoListViewModel>
 
 @{
     ViewBag.Title = "Pagos";
@@ -60,11 +60,11 @@
                                 <td>@item.Monto.ToString("C")</td>
                                 <td>@item.FechaPago.ToString("d")</td>
                                 <td>
-                                    @if (item.Estado == Condominio.Domain.Enums.EstadoPago.Pagado)
+                                    @if (item.Estado == Condominio.Domain.Pagos.EstadoPago.Pagado)
                                     {
                                         <span class="badge bg-success">@item.EstadoNombre</span>
                                     }
-                                    else if (item.Estado == Condominio.Domain.Enums.EstadoPago.Atrasado)
+                                    else if (item.Estado == Condominio.Domain.Pagos.EstadoPago.Atrasado)
                                     {
                                         <span class="badge bg-danger">@item.EstadoNombre</span>
                                     }

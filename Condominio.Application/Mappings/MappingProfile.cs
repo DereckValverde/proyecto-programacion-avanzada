@@ -1,14 +1,22 @@
-﻿using AutoMapper;
-using Condominio.Application.DTOs;
-using Condominio.Domain.Entities;
-using Condominio.Application.ViewModels.Noticia;
-using Condominio.Application.ViewModels.Pago;
-using Condominio.Application.ViewModels.Residente;
-using Condominio.Application.ViewModels.Usuario;
-using Condominio.Application.ViewModels.Vivienda;
-using Condominio.Application.ViewModels.Visitante;
-using Condominio.Application.ViewModels.Reserva;
-using Condominio.Application.ViewModels.Incidencia;
+using AutoMapper;
+using Condominio.Application.AreasComunes;
+using Condominio.Application.Incidencias;
+using Condominio.Application.Noticias;
+using Condominio.Application.Pagos;
+using Condominio.Application.Reservas;
+using Condominio.Application.Residentes;
+using Condominio.Application.Usuarios;
+using Condominio.Application.Visitantes;
+using Condominio.Application.Viviendas;
+using Condominio.Domain.AreasComunes;
+using Condominio.Domain.Incidencias;
+using Condominio.Domain.Noticias;
+using Condominio.Domain.Pagos;
+using Condominio.Domain.Reservas;
+using Condominio.Domain.Residentes;
+using Condominio.Domain.Usuarios;
+using Condominio.Domain.Visitantes;
+using Condominio.Domain.Viviendas;
 
 namespace Condominio.Application.Mappings
 {

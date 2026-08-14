@@ -1,11 +1,9 @@
-using Condominio.Application.DTOs;
-using Condominio.Infrastructure.DbContexts;
-using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Incidencias;
 using Condominio.Application.Mappings;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.ViewModels.Incidencia;
-using Condominio.Domain.Entities;
-using Condominio.Domain.Enums;
+using Condominio.Domain.Incidencias;
+using Condominio.Domain.Residentes;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;

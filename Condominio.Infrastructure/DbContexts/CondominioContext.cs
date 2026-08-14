@@ -1,6 +1,15 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-using Condominio.Domain.Entities;
+using Condominio.Domain.AreasComunes;
+using Condominio.Domain.Identity;
+using Condominio.Domain.Incidencias;
+using Condominio.Domain.Noticias;
+using Condominio.Domain.Pagos;
+using Condominio.Domain.Reservas;
+using Condominio.Domain.Residentes;
+using Condominio.Domain.Usuarios;
+using Condominio.Domain.Visitantes;
+using Condominio.Domain.Viviendas;
 
 namespace Condominio.Infrastructure.DbContexts
 {
