@@ -1,0 +1,71 @@
+﻿@model Condominio.Application.Incidencias.IncidenciaDetailsViewModel
+@using Condominio.Domain.Incidencias
+
+@{
+    ViewBag.Title = "Detalle de la Incidencia";
+}
+
+<div class="card shadow mx-auto" style="max-width: 640px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-exclamation-circle me-2"></i>Detalle de la Incidencia</h2>
+    </div>
+
+    <div class="card-body">
+        <dl class="dl-condominio">
+            <dt>Descripción</dt>
+            <dd>@Model.Descripcion</dd>
+
+            <dt>Residente</dt>
+            <dd>@Model.NombreResidente</dd>
+
+            <dt>Vivienda</dt>
+            <dd>@Model.NombreVivienda</dd>
+
+            <dt>Fecha de Reporte</dt>
+            <dd>@Model.FechaReporte.ToString("g")</dd>
+
+            <dt>Prioridad</dt>
+            <dd>
+                @if (Model.Prioridad == PrioridadIncidencia.Alta)
+                {
+                    <span class="badge bg-danger">@Model.PrioridadNombre</span>
+                }
+                else if (Model.Prioridad == PrioridadIncidencia.Media)
+                {
+                    <span class="badge bg-warning text-dark">@Model.PrioridadNombre</span>
+                }
+                else
+                {
+                    <span class="badge bg-info text-dark">@Model.PrioridadNombre</span>
+                }
+            </dd>
+
+            <dt>Estado</dt>
+            <dd>
+                @if (Model.Estado == EstadoIncidencia.Resuelta)
+                {
+                    <span class="badge bg-success">@Model.EstadoNombre</span>
+                }
+                else if (Model.Estado == EstadoIncidencia.EnProceso)
+                {
+                    <span class="badge bg-warning text-dark">@Model.EstadoNombre</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">@Model.EstadoNombre</span>
+                }
+            </dd>
+        </dl>
+
+        <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+            @if (ViewBag.EsResidente != true)
+            {
+                <a href="@Url.Action("Edit", new { id = Model.IdIncidencia })" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i> Editar
+                </a>
+            }
+
+            <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+        </div>
+    </div>
+</div>

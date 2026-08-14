@@ -1,10 +1,12 @@
-﻿using Condominio.Application.DTOs;
-using Condominio.Application.Mappings;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.ViewModels.Pago;
-using Condominio.Domain.Enums;
+﻿using Condominio.Application.Mappings;
+using Condominio.Application.Pagos;
+using Condominio.Application.Viviendas;
+using Condominio.Domain.Pagos;
+using Condominio.Domain.Residentes;
+using Condominio.Domain.Viviendas;
 using Condominio.Infrastructure.DbContexts;
-using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Infrastructure.Repositories;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,12 @@ using System.Web.Mvc;
 
 namespace Condominio.Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, Residente")]
     public class PagoController : Controller
     {
         private readonly PagoService _pagoService;
         private readonly ViviendaService _viviendaService;
+        private readonly ResidenteRepository _residenteRepository;
 
         public PagoController()
         {
@@ -24,21 +27,49 @@ namespace Condominio.Web.Controllers
 
             var pagoRepository = new PagoRepository(context);
             var viviendaRepository = new ViviendaRepository(context);
+            var residenteRepository = new ResidenteRepository(context);
 
             _pagoService = new PagoService(pagoRepository);
             _viviendaService = new ViviendaService(viviendaRepository);
+            _residenteRepository = residenteRepository;
         }
 
-        private void CargarCombos()
+        private bool EsResidente => User.IsInRole("Residente");
+
+        private int ObtenerIdViviendaResidente()
         {
-            ViewBag.Viviendas = _viviendaService
-                .obtenerTodos()
+            var userId = User.Identity.GetUserId<int>();
+
+            var residente = _residenteRepository.ObtenerPorIdUsuario(userId);
+
+            return residente?.IdVivienda ?? 0;
+        }
+
+        private void CargarCombos(int? idViviendaResidente = null)
+        {
+            IEnumerable<ViviendaDto> viviendas = _viviendaService.obtenerTodos();
+
+            if (idViviendaResidente.HasValue)
+            {
+                viviendas = viviendas.Where(v => v.IdVivienda == idViviendaResidente.Value).ToList();
+            }
+
+            ViewBag.Viviendas = viviendas
                 .Select(v => new SelectListItem
                 {
                     Value = v.IdVivienda.ToString(),
                     Text = "Bloque " + v.Bloque + " - Vivienda " + v.Numero
                 })
                 .ToList();
+
+            if (idViviendaResidente.HasValue)
+            {
+                var vivienda = viviendas.FirstOrDefault();
+
+                ViewBag.ViviendaResidente = vivienda == null
+                    ? null
+                    : "Bloque " + vivienda.Bloque + " - Vivienda " + vivienda.Numero;
+            }
         }
 
         // GET: Pago
@@ -46,25 +77,46 @@ namespace Condominio.Web.Controllers
         {
             IEnumerable<PagoDto> pagosDto;
 
-            switch (filtro)
+            if (EsResidente)
             {
-                case "pendientes":
-                    pagosDto = _pagoService.ObtenerPorEstado(EstadoPago.Pendiente);
-                    break;
-                case "pagados":
-                    pagosDto = _pagoService.ObtenerPorEstado(EstadoPago.Pagado);
-                    break;
-                case "atrasados":
-                    pagosDto = _pagoService.ObtenerPorEstado(EstadoPago.Atrasado);
-                    break;
-                default:
-                    pagosDto = _pagoService.ObtenerTodos();
-                    break;
+                pagosDto = _pagoService.ObtenerPorVivienda(ObtenerIdViviendaResidente());
+
+                switch (filtro)
+                {
+                    case "pendientes":
+                        pagosDto = pagosDto.Where(p => p.Estado == EstadoPago.Pendiente);
+                        break;
+                    case "pagados":
+                        pagosDto = pagosDto.Where(p => p.Estado == EstadoPago.Pagado);
+                        break;
+                    case "atrasados":
+                        pagosDto = pagosDto.Where(p => p.Estado == EstadoPago.Atrasado);
+                        break;
+                }
+            }
+            else
+            {
+                switch (filtro)
+                {
+                    case "pendientes":
+                        pagosDto = _pagoService.ObtenerPorEstado(EstadoPago.Pendiente);
+                        break;
+                    case "pagados":
+                        pagosDto = _pagoService.ObtenerPorEstado(EstadoPago.Pagado);
+                        break;
+                    case "atrasados":
+                        pagosDto = _pagoService.ObtenerPorEstado(EstadoPago.Atrasado);
+                        break;
+                    default:
+                        pagosDto = _pagoService.ObtenerTodos();
+                        break;
+                }
             }
 
             var pagos = AutoMapperConfig.Mapper.Map<IEnumerable<PagoListViewModel>>(pagosDto);
 
             ViewBag.Filtro = filtro;
+            ViewBag.EsResidente = EsResidente;
 
             return View(pagos);
         }
@@ -77,6 +129,12 @@ namespace Condominio.Web.Controllers
             if (pagoDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && pagoDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para ver este pago.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<PagoDetailsViewModel>(pagoDto);
 
             return View(model);
@@ -85,9 +143,17 @@ namespace Condominio.Web.Controllers
         // GET: Pago/Create
         public ActionResult Create()
         {
-            CargarCombos();
+            var idViviendaResidente = EsResidente ? ObtenerIdViviendaResidente() : (int?)null;
 
-            return View(new PagoCreateViewModel { FechaPago = DateTime.Now });
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(idViviendaResidente);
+
+            return View(new PagoCreateViewModel
+            {
+                FechaPago = DateTime.Now,
+                IdVivienda = idViviendaResidente ?? 0
+            });
         }
 
         // POST: Pago/Create
@@ -95,6 +161,12 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PagoCreateViewModel model)
         {
+            if (EsResidente)
+            {
+                model.IdVivienda = ObtenerIdViviendaResidente();
+                model.Estado = EstadoPago.Pendiente;
+            }
+
             if (ModelState.IsValid)
             {
                 var dto = AutoMapperConfig.Mapper.Map<PagoDto>(model);
@@ -103,7 +175,7 @@ namespace Condominio.Web.Controllers
                 {
                     _pagoService.Agregar(dto);
 
-                    TempData["Success"] = "Pago registrado exitosamente.";
+                    TempData["Success"] = "Pago registrado exitosamente. Queda pendiente de confirmación por el administrador.";
 
                     return RedirectToAction("Index");
                 }
@@ -113,7 +185,9 @@ namespace Condominio.Web.Controllers
                 }
             }
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? model.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -121,6 +195,12 @@ namespace Condominio.Web.Controllers
         // GET: Pago/Edit/5
         public ActionResult Edit(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para editar pagos.";
+                return RedirectToAction("Index");
+            }
+
             var pagoDto = _pagoService.ObtenerPorId(id);
 
             if (pagoDto == null)
@@ -128,7 +208,9 @@ namespace Condominio.Web.Controllers
 
             var model = AutoMapperConfig.Mapper.Map<PagoEditViewModel>(pagoDto);
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? pagoDto.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -138,6 +220,12 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PagoEditViewModel model)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para editar pagos.";
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 var dto = AutoMapperConfig.Mapper.Map<PagoDto>(model);
@@ -156,7 +244,9 @@ namespace Condominio.Web.Controllers
                 }
             }
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? model.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -164,6 +254,12 @@ namespace Condominio.Web.Controllers
         // GET: Pago/Delete/5
         public ActionResult Delete(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para eliminar pagos.";
+                return RedirectToAction("Index");
+            }
+
             var pagoDto = _pagoService.ObtenerPorId(id);
 
             if (pagoDto == null)
@@ -179,6 +275,12 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (EsResidente)
+            {
+                TempData["Error"] = "No tiene permisos para eliminar pagos.";
+                return RedirectToAction("Index");
+            }
+
             var pago = _pagoService.ObtenerPorId(id);
 
             if (pago == null)

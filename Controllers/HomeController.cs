@@ -8,15 +8,14 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Web;
 using Condominio.Identity;
-using Condominio.Domain.Enums;
-using Condominio.Infrastructure.DbContexts;
-using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Home;
+using Condominio.Application.Login;
 using Condominio.Application.Mappings;
-using Condominio.Application.Services.Implementations;
-using Condominio.Application.Services.Interfaces;
-using Condominio.Application.ViewModels.Home;
-using Condominio.Application.ViewModels.Login;
-using Condominio.Application.ViewModels.Noticia;
+using Condominio.Application.Noticias;
+using Condominio.Domain.Noticias;
+using Condominio.Domain.Shared;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories;
 
 namespace Condominio.Web.Controllers
 {

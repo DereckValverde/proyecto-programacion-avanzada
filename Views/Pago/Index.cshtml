@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Condominio.Application.ViewModels.Pago.PagoListViewModel>
+@model IEnumerable<Condominio.Application.Pagos.PagoListViewModel>
 
 @{
     ViewBag.Title = "Pagos";
@@ -60,11 +60,11 @@
                                 <td>@item.Monto.ToString("C")</td>
                                 <td>@item.FechaPago.ToString("d")</td>
                                 <td>
-                                    @if (item.Estado == Condominio.Domain.Enums.EstadoPago.Pagado)
+                                    @if (item.Estado == Condominio.Domain.Pagos.EstadoPago.Pagado)
                                     {
                                         <span class="badge bg-success">@item.EstadoNombre</span>
                                     }
-                                    else if (item.Estado == Condominio.Domain.Enums.EstadoPago.Atrasado)
+                                    else if (item.Estado == Condominio.Domain.Pagos.EstadoPago.Atrasado)
                                     {
                                         <span class="badge bg-danger">@item.EstadoNombre</span>
                                     }
@@ -77,11 +77,14 @@
                                     @Html.ActionLink(" ", "Details", new { id = item.IdPago },
                                         new { @class = "btn btn-sm btn-outline-info btn-action fas fa-eye", title = "Detalles" })
 
-                                    @Html.ActionLink(" ", "Edit", new { id = item.IdPago },
-                                        new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })
+                                    @if (ViewBag.EsResidente != true)
+                                    {
+                                        @Html.ActionLink(" ", "Edit", new { id = item.IdPago },
+                                            new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })
 
-                                    @Html.ActionLink(" ", "Delete", new { id = item.IdPago },
-                                        new { @class = "btn btn-sm btn-outline-danger btn-action fas fa-trash-alt", title = "Eliminar" })
+                                        @Html.ActionLink(" ", "Delete", new { id = item.IdPago },
+                                            new { @class = "btn btn-sm btn-outline-danger btn-action fas fa-trash-alt", title = "Eliminar" })
+                                    }
                                 </td>
                             </tr>
                         }

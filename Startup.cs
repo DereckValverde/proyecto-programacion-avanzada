@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using Condominio.Identity;
 using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Migrations;
 
 [assembly: OwinStartup(typeof(Condominio.Web.Startup))]
 

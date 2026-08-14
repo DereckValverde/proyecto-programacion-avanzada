@@ -1,4 +1,4 @@
-﻿@model Condominio.Application.ViewModels.Pago.PagoDetailsViewModel
+@model Condominio.Application.Pagos.PagoDetailsViewModel
 
 @{
     ViewBag.Title = "Detalle del Pago";
@@ -25,11 +25,11 @@
 
             <dt>Estado</dt>
             <dd>
-                @if (Model.Estado == Condominio.Domain.Enums.EstadoPago.Pagado)
+                @if (Model.Estado == Condominio.Domain.Pagos.EstadoPago.Pagado)
                 {
                     <span class="badge bg-success">@Model.EstadoNombre</span>
                 }
-                else if (Model.Estado == Condominio.Domain.Enums.EstadoPago.Atrasado)
+                else if (Model.Estado == Condominio.Domain.Pagos.EstadoPago.Atrasado)
                 {
                     <span class="badge bg-danger">@Model.EstadoNombre</span>
                 }

@@ -1,6 +1,7 @@
-﻿namespace Condominio.Infrastructure.Migrations
+namespace Condominio.Infrastructure.Migrations
 {
     using System.Data.Entity.Migrations;
+    using Condominio.Domain.Residentes;
 
     public partial class AddIdentity : DbMigration
     {

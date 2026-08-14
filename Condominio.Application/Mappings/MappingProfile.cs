@@ -1,13 +1,22 @@
-﻿using AutoMapper;
-using Condominio.Application.DTOs;
-using Condominio.Domain.Entities;
-using Condominio.Application.ViewModels.Noticia;
-using Condominio.Application.ViewModels.Pago;
-using Condominio.Application.ViewModels.Residente;
-using Condominio.Application.ViewModels.Usuario;
-using Condominio.Application.ViewModels.Vivienda;
-using Condominio.Application.ViewModels.Visitante;
-using Condominio.Application.ViewModels.Reserva;
+using AutoMapper;
+using Condominio.Application.AreasComunes;
+using Condominio.Application.Incidencias;
+using Condominio.Application.Noticias;
+using Condominio.Application.Pagos;
+using Condominio.Application.Reservas;
+using Condominio.Application.Residentes;
+using Condominio.Application.Usuarios;
+using Condominio.Application.Visitantes;
+using Condominio.Application.Viviendas;
+using Condominio.Domain.AreasComunes;
+using Condominio.Domain.Incidencias;
+using Condominio.Domain.Noticias;
+using Condominio.Domain.Pagos;
+using Condominio.Domain.Reservas;
+using Condominio.Domain.Residentes;
+using Condominio.Domain.Usuarios;
+using Condominio.Domain.Visitantes;
+using Condominio.Domain.Viviendas;
 
 namespace Condominio.Application.Mappings
 {
@@ -91,27 +100,6 @@ namespace Condominio.Application.Mappings
                 .ForMember(dest => dest.Incidencias, opt => opt.Ignore());
 
 
-            CreateMap<ResidenteDto, ResidenteCreateViewModel>()
-                .ForMember(dest => dest.Usuarios, opt => opt.Ignore())
-                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
-                .ReverseMap();
-
-            CreateMap<ResidenteDto, ResidenteEditViewModel>()
-                .ForMember(dest => dest.Usuarios, opt => opt.Ignore())
-                .ForMember(dest => dest.Viviendas, opt => opt.Ignore())
-                .ReverseMap();
-
-            CreateMap<ResidenteDto, ResidenteListViewModel>()
-                .ForMember(dest => dest.Vivienda,
-                    opt => opt.MapFrom(src => src.NombreVivienda));
-
-            CreateMap<ResidenteDto, ResidenteDetailsViewModel>()
-                .ForMember(dest => dest.NombreUsuario,
-                opt => opt.MapFrom(src => src.NombreUsuario))
-                .ForMember(dest => dest.NombreVivienda,
-                opt => opt.MapFrom(src => src.NombreVivienda));
-
-
             CreateMap<Pago, PagoDto>()
                 .ForMember(dest => dest.NombreVivienda,
                     opt => opt.MapFrom(src =>
@@ -189,6 +177,26 @@ namespace Condominio.Application.Mappings
                 .ReverseMap();
 
             CreateMap<Incidencia, IncidenciaDto>()
+                .ForMember(dest => dest.NombreResidente,
+                    opt => opt.MapFrom(src => src.Residente.Nombre))
+                .ForMember(dest => dest.NombreVivienda,
+                    opt => opt.MapFrom(src =>
+                        "Bloque " + src.Residente.Vivienda.Bloque +
+                        " - Vivienda " + src.Residente.Vivienda.Numero));
+
+            CreateMap<IncidenciaDto, Incidencia>()
+                .ForMember(dest => dest.Residente, opt => opt.Ignore());
+
+            CreateMap<IncidenciaDto, IncidenciaCreateViewModel>()
+                .ReverseMap();
+
+            CreateMap<IncidenciaDto, IncidenciaEditViewModel>()
+                .ReverseMap();
+
+            CreateMap<IncidenciaDto, IncidenciaListViewModel>()
+                .ReverseMap();
+
+            CreateMap<IncidenciaDto, IncidenciaDetailsViewModel>()
                 .ReverseMap();
 
             CreateMap<Noticia, NoticiaDto>()

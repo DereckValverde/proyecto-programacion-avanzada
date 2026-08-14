@@ -1,5 +1,5 @@
-﻿@model Condominio.Application.ViewModels.Visitante.VisitanteEditViewModel
-@using Condominio.Domain.Enums
+﻿@model Condominio.Application.Visitantes.VisitanteEditViewModel
+@using Condominio.Domain.Visitantes
 
 @{
     ViewBag.Title = "Editar Visitante";
@@ -54,15 +54,27 @@
                 <small class="form-text text-muted">Déjelo vacío si el visitante aún se encuentra dentro del condominio.</small>
             </div>
 
-            <div class="form-group mb-3">
-                @Html.LabelFor(m => m.IdVivienda, "Vivienda que visita", new { @class = "form-label d-block" })
-                @Html.DropDownListFor(
-                    m => m.IdVivienda,
-                    (IEnumerable<SelectListItem>)ViewBag.Viviendas,
-                    "Seleccione una vivienda",
-                    new { @class = "form-select" })
-                @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
-            </div>
+            if (ViewBag.EsResidente == true)
+            {
+                @Html.HiddenFor(m => m.IdVivienda)
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.IdVivienda, "Vivienda que visita", new { @class = "form-label d-block" })
+                    <input type="text" class="form-control" value="@ViewBag.ViviendaResidente" disabled="disabled" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.IdVivienda, "Vivienda que visita", new { @class = "form-label d-block" })
+                    @Html.DropDownListFor(
+                        m => m.IdVivienda,
+                        (IEnumerable<SelectListItem>)ViewBag.Viviendas,
+                        "Seleccione una vivienda",
+                        new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
+                </div>
+            }
 
             <div class="d-flex justify-content-center gap-2 mt-4">
                 <button class="btn btn-primary">

@@ -26,14 +26,22 @@
                             <li class="nav-item">@Html.ActionLink("Reservas", "Index", "Reserva", null, new { @class = "nav-link" })</li>
                             <li class="nav-item">@Html.ActionLink("Noticias", "Index", "Noticia", null, new { @class = "nav-link" })</li>
                             <li class="nav-item">@Html.ActionLink("Usuarios", "Index", "Usuario", null, new { @class = "nav-link" })</li>
-                            <li class="nav-item">@Html.ActionLink("Residentes", "Index", "Residente", null, new { @class = "nav-link" })</li>
                             <li class="nav-item">@Html.ActionLink("Viviendas", "Index", "Vivienda", null, new { @class = "nav-link" })</li>
                             <li class="nav-item">@Html.ActionLink("Visitantes", "Index", "Visitante", null, new { @class = "nav-link" })</li>
                             <li class="nav-item">@Html.ActionLink("Pagos", "Index", "Pago", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Incidencias", "Index", "Incidencia", null, new { @class = "nav-link" })</li>
+                        }
+                        else if (User.IsInRole("Residente"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Mis Reservas", "Index", "Reserva", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Mis Pagos", "Index", "Pago", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Visitantes", "Index", "Visitante", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Incidencias", "Index", "Incidencia", null, new { @class = "nav-link" })</li>
                         }
                         else
                         {
                             <li class="nav-item">@Html.ActionLink("Visitantes", "Index", "Visitante", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Incidencias", "Index", "Incidencia", null, new { @class = "nav-link" })</li>
                         }
                     }
                 </ul>
