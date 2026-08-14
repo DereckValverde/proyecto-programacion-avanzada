@@ -1,0 +1,51 @@
+@model Condominio.Application.ViewModels.Incidencia.IncidenciaDetailsViewModel
+
+@{
+    ViewBag.Title = "Eliminar Incidencia";
+}
+
+<div class="card shadow mx-auto" style="max-width: 640px;">
+    <div class="card-header bg-danger text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-trash-alt me-2"></i>Eliminar Incidencia</h2>
+    </div>
+
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            ¿Está seguro de que desea eliminar esta incidencia?
+        </div>
+
+        <dl class="dl-condominio">
+            <dt>Descripción</dt>
+            <dd>@Model.Descripcion</dd>
+
+            <dt>Residente</dt>
+            <dd>@Model.NombreResidente</dd>
+
+            <dt>Vivienda</dt>
+            <dd>@Model.NombreVivienda</dd>
+
+            <dt>Fecha de Reporte</dt>
+            <dd>@Model.FechaReporte.ToString("g")</dd>
+
+            <dt>Prioridad</dt>
+            <dd>@Model.PrioridadNombre</dd>
+
+            <dt>Estado</dt>
+            <dd>@Model.EstadoNombre</dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="d-flex justify-content-center gap-2">
+                <button class="btn btn-danger">
+                    <i class="fas fa-trash-alt me-1"></i>Eliminar
+                </button>
+
+                <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Cancelar</a>
+            </div>
+        }
+    </div>
+</div>

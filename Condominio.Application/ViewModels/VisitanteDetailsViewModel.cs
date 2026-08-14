@@ -1,0 +1,26 @@
+﻿using Condominio.Domain.Enums;
+using System;
+
+namespace Condominio.Application.ViewModels.Visitante
+{
+    public class VisitanteDetailsViewModel
+    {
+        public int IdVisitante { get; set; }
+
+        public string Nombre { get; set; }
+
+        public string Identificacion { get; set; }
+
+        public TipoVisitante Tipo { get; set; }
+
+        public DateTime FechaIngreso { get; set; }
+
+        public DateTime? FechaSalida { get; set; }
+
+        public bool SeEncuentraDentro => FechaSalida == null;
+
+        public int IdVivienda { get; set; }
+
+        public string NombreVivienda { get; set; }
+    }
+}

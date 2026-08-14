@@ -1,104 +1,112 @@
-﻿@model proyecto_programacion_avanzada.ViewModels.Usuario.UsuarioEditViewModel
-@using proyecto_programacion_avanzada.Common.Enums
-
+﻿@model Condominio.Application.ViewModels.Usuario.UsuarioEditViewModel
+@using Condominio.Domain.Enums
 
 @{
     ViewBag.Title = "Editar Usuario";
 }
 
-<h2>Editar Usuario</h2>
-
-@using (Html.BeginForm())
-{
-
-    @Html.AntiForgeryToken()
-
-    @Html.HiddenFor(x => x.IdUsuario)
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.Nombre)
-        @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Nombre, "", new { @class = "text-danger" })
+<div class="card shadow mx-auto" style="max-width: 760px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-edit me-2"></i>Editar Usuario</h2>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(x => x.Correo)
-        @Html.TextBoxFor(x => x.Correo, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Correo, "", new { @class = "text-danger" })
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(x => x.IdUsuario)
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Nombre)
+                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Nombre, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Correo)
+                @Html.TextBoxFor(x => x.Correo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Correo, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Telefono)
+                @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Rol)
+
+                @Html.DropDownListFor(
+                    x => x.Rol,
+                    new SelectList(Enum.GetValues(typeof(RolUsuario))),
+                    "Seleccione un rol",
+                    new { @class = "form-control", id = "Rol" }
+                )
+
+                @Html.ValidationMessageFor(x => x.Rol, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Estado)
+
+                @Html.DropDownListFor(
+                    x => x.Estado,
+                    new SelectList(Enum.GetValues(typeof(EstadoGeneral))),
+                    "Seleccione un estado",
+                    new { @class = "form-control" }
+                )
+
+                @Html.ValidationMessageFor(x => x.Estado, "", new { @class = "text-danger" })
+            </div>
+
+            <div id="panelResidente" style="display:none;">
+
+                <hr />
+
+                <h4 class="h6 fw-bold">Información del Residente</h4>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.FechaIngreso)
+
+                    @Html.TextBoxFor(x => x.FechaIngreso,
+                        "{0:yyyy-MM-dd}",
+                        new
+                        {
+                            @class = "form-control",
+                            type = "date"
+                        })
+
+                    @Html.ValidationMessageFor(x => x.FechaIngreso, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+
+                    @Html.Label("Vivienda")
+
+                    @Html.DropDownListFor(
+                        x => x.IdVivienda,
+                        Model.Viviendas,
+                        "Seleccione una vivienda",
+                        new { @class = "form-control" }
+                    )
+
+                    @Html.ValidationMessageFor(x => x.IdVivienda, "", new { @class = "text-danger" })
+
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i>Actualizar
+                </button>
+
+                <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+            </div>
+        }
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.Telefono)
-        @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.Rol)
-
-        @Html.DropDownListFor(
-            x => x.Rol,
-            new SelectList(Enum.GetValues(typeof(RolUsuario))),
-            "Seleccione un rol",
-            new { @class = "form-control" }
-        )
-
-        @Html.ValidationMessageFor(x => x.Rol, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.Estado)
-
-        @Html.DropDownListFor(
-            x => x.Estado,
-            new SelectList(Enum.GetValues(typeof(EstadoGeneral))),
-            "Seleccione un estado",
-            new { @class = "form-control" }
-        )
-
-        @Html.ValidationMessageFor(x => x.Estado, "", new { @class = "text-danger" })
-    </div>
-
-    <div id="panelResidente" style="display:none;">
-
-        <hr />
-
-        <h4>Información del Residente</h4>
-
-        <div class="form-group">
-            @Html.LabelFor(x => x.FechaIngreso)
-
-            @Html.TextBoxFor(x => x.FechaIngreso,
-                "{0:yyyy-MM-dd}",
-                new
-                {
-                    @class = "form-control",
-                    type = "date"
-                })
-
-            @Html.ValidationMessageFor(x => x.FechaIngreso, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-
-            @Html.Label("Vivienda")
-
-            @Html.DropDownListFor(
-                x => x.IdVivienda,
-                Model.Viviendas,
-                "Seleccione una vivienda",
-                new { @class = "form-control" }
-            )
-
-        </div>
-
-    </div>
-
-    <br />
-
-    <button class="btn btn-primary">
-        Actualizar
-    </button>
-}
+</div>
 
 @section Scripts{
 
@@ -123,11 +131,83 @@
 
             }
 
+            function mostrarMensaje(nombreCampo, mensaje) {
+
+                $("[data-valmsg-for='" + nombreCampo + "']")
+                    .text(mensaje)
+                    .removeClass("field-validation-valid")
+                    .addClass("field-validation-error");
+
+            }
+
+            function limpiarMensaje(nombreCampo) {
+
+                $("[data-valmsg-for='" + nombreCampo + "']")
+                    .text("")
+                    .removeClass("field-validation-error")
+                    .addClass("field-validation-valid");
+
+            }
+
+            function validarResidente() {
+
+                var rol = $("#Rol option:selected").text();
+
+                if (rol !== "Residente") {
+
+                    return true;
+
+                }
+
+                var valido = true;
+
+                if ($("#FechaIngreso").val() === "") {
+
+                    mostrarMensaje("FechaIngreso", "La fecha de ingreso es obligatoria para un residente.");
+                    valido = false;
+
+                }
+                else {
+
+                    limpiarMensaje("FechaIngreso");
+
+                }
+
+                if ($("#IdVivienda").val() === "") {
+
+                    mostrarMensaje("IdVivienda", "Debe seleccionar una vivienda.");
+                    valido = false;
+
+                }
+                else {
+
+                    limpiarMensaje("IdVivienda");
+
+                }
+
+                return valido;
+
+            }
+
             mostrarPanelResidente();
 
             $("#Rol").change(function () {
 
                 mostrarPanelResidente();
+
+                limpiarMensaje("FechaIngreso");
+
+                limpiarMensaje("IdVivienda");
+
+            });
+
+            $("form").on("submit", function (e) {
+
+                if (!validarResidente()) {
+
+                    e.preventDefault();
+
+                }
 
             });
 
@@ -135,3 +215,4 @@
 
     </script>
 }
+

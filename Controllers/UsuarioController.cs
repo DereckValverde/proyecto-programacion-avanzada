@@ -1,17 +1,20 @@
-﻿using proyecto_programacion_avanzada.Common.Enums;
-using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Entities;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.ViewModels.Usuario;
+﻿using Condominio.Domain.Enums;
+using Condominio.Application.DTOs;
+using Condominio.Domain.Entities;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.ViewModels.Usuario;
+using Condominio.Identity;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class UsuarioController : Controller
     {
 
@@ -38,6 +41,19 @@ namespace proyecto_programacion_avanzada.Controllers
                 {
                     Value = v.IdVivienda.ToString(),
                     Text = "Bloque " + v.Bloque + " - Vivienda " + v.Numero
+                })
+                .ToList();
+        }
+
+        private IEnumerable<SelectListItem> ObtenerViviendas(int? idViviendaSeleccionada = null)
+        {
+            return _viviendaRepository
+                .ObtenerTodos()
+                .Select(v => new SelectListItem
+                {
+                    Value = v.IdVivienda.ToString(),
+                    Text = v.Numero,
+                    Selected = v.IdVivienda == idViviendaSeleccionada
                 })
                 .ToList();
         }
@@ -86,17 +102,38 @@ namespace proyecto_programacion_avanzada.Controllers
                 return View(model);
             }
 
-            var usuarioDto = new UsuarioDto
+            var usuario = new Usuario
             {
+                UserName = model.Correo,
                 Nombre = model.Nombre,
-                Correo = model.Correo,
                 Telefono = model.Telefono,
-                Contrasena = model.Contrasena,
                 Rol = model.Rol,
                 Estado = model.Estado
             };
 
-            var usuarioCreado = _usuarioService.Agregar(usuarioDto);
+            using (var context = new CondominioContext())
+            using (var userManager = ApplicationUserManager.Create(context))
+            {
+                var resultado = userManager.Create(usuario, model.Contrasena);
+
+                if (!resultado.Succeeded)
+                {
+                    foreach (var error in resultado.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
+
+                    CargarViviendas();
+                    return View(model);
+                }
+
+                ApplicationUserManager.AsegurarRol(context, model.Rol.ToString());
+
+                if (!userManager.IsInRole(usuario.Id, model.Rol.ToString()))
+                {
+                    userManager.AddToRole(usuario.Id, model.Rol.ToString());
+                }
+            }
 
             if (model.Rol == RolUsuario.Residente)
             {
@@ -105,13 +142,15 @@ namespace proyecto_programacion_avanzada.Controllers
                     Nombre = model.Nombre,
                     FechaIngreso = model.FechaIngreso.Value,
                     Estado = model.Estado,
-                    IdUsuario = usuarioCreado.IdUsuario,
+                    IdUsuario = usuario.Id,
                     IdVivienda = model.IdVivienda.Value
                 };
 
                 _residenteRepository.Agregar(residente);
                 _residenteRepository.Guardar();
             }
+
+            TempData["Success"] = "Usuario registrado exitosamente.";
 
             return RedirectToAction("Index");
         }
@@ -150,15 +189,7 @@ namespace proyecto_programacion_avanzada.Controllers
             }
 
 
-            model.Viviendas = _viviendaRepository
-                .ObtenerTodos()
-                .Select(v => new SelectListItem
-                {
-                    Value = v.IdVivienda.ToString(),
-                    Text = v.Numero,
-                    Selected = v.IdVivienda == model.IdVivienda
-                })
-                .ToList();
+            model.Viviendas = ObtenerViviendas(model.IdVivienda);
 
 
             return View(model);
@@ -170,6 +201,7 @@ namespace proyecto_programacion_avanzada.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Viviendas = ObtenerViviendas(model.IdVivienda);
                 return View(model);
             }
 
@@ -186,8 +218,23 @@ namespace proyecto_programacion_avanzada.Controllers
 
             _usuarioService.Actualizar(usuarioDto);
 
+            using (var context = new CondominioContext())
+            using (var userManager = ApplicationUserManager.Create(context))
+            {
+                var usuario = userManager.FindById(model.IdUsuario);
 
-            // Si el usuario es residente, actualizar residente
+                if (usuario != null)
+                {
+                    foreach (var rol in userManager.GetRoles(usuario.Id))
+                    {
+                        userManager.RemoveFromRole(usuario.Id, rol);
+                    }
+
+                    userManager.AddToRole(usuario.Id, model.Rol.ToString());
+                }
+            }
+
+
             if (model.Rol == RolUsuario.Residente)
             {
                 var residente = _residenteRepository.ObtenerPorIdUsuario(model.IdUsuario);
@@ -204,6 +251,7 @@ namespace proyecto_programacion_avanzada.Controllers
                 }
             }
 
+            TempData["Success"] = "Usuario actualizado exitosamente.";
 
             return RedirectToAction("Index");
         }
@@ -237,6 +285,8 @@ namespace proyecto_programacion_avanzada.Controllers
             }
 
             _usuarioService.Eliminar(id);
+
+            TempData["Success"] = "Usuario eliminado exitosamente.";
 
             return RedirectToAction("Index");
         }

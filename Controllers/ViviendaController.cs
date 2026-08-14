@@ -1,21 +1,22 @@
-﻿using proyecto_programacion_avanzada.DTOs;
-using proyecto_programacion_avanzada.Infrastructure.DbContexts;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Implementations;
-using proyecto_programacion_avanzada.Infrastructure.Repositories.Interfaces;
-using proyecto_programacion_avanzada.Mappings;
-using proyecto_programacion_avanzada.Services.Implementations;
-using proyecto_programacion_avanzada.Services.Interfaces;
-using proyecto_programacion_avanzada.ViewModels;
-using proyecto_programacion_avanzada.ViewModels.Usuario;
-using proyecto_programacion_avanzada.ViewModels.Vivienda;
+﻿using Condominio.Application.DTOs;
+using Condominio.Infrastructure.DbContexts;
+using Condominio.Infrastructure.Repositories.Implementations;
+using Condominio.Application.Repositories.Interfaces;
+using Condominio.Application.Mappings;
+using Condominio.Application.Services.Implementations;
+using Condominio.Application.Services.Interfaces;
+using Condominio.Application.ViewModels;
+using Condominio.Application.ViewModels.Usuario;
+using Condominio.Application.ViewModels.Vivienda;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace proyecto_programacion_avanzada.Controllers
+namespace Condominio.Web.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ViviendaController : Controller
     {
 
@@ -57,7 +58,7 @@ namespace proyecto_programacion_avanzada.Controllers
         //Get: Vivienda/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ViviendaCreateViewModel());
         }
 
         //Post Vivienda/Create
@@ -70,6 +71,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 var dto = AutoMapperConfig.Mapper.Map<ViviendaDto>(model);
 
                 _viviendaService.Agregar(dto);
+
+                TempData["Success"] = "Vivienda registrada exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -103,6 +106,8 @@ namespace proyecto_programacion_avanzada.Controllers
                 var dto = AutoMapperConfig.Mapper.Map<ViviendaDto>(model);
 
                 _viviendaService.Actualizar(dto);
+
+                TempData["Success"] = "Vivienda actualizada exitosamente.";
 
                 return RedirectToAction("Index");
             }
@@ -143,6 +148,8 @@ namespace proyecto_programacion_avanzada.Controllers
 
 
             _viviendaService.Eliminar(id);
+
+            TempData["Success"] = "Vivienda eliminada exitosamente.";
 
             return RedirectToAction("Index");
         }

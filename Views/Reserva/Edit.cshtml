@@ -1,0 +1,104 @@
+﻿@model Condominio.Application.ViewModels.Reserva.ReservaEditViewModel
+@using Condominio.Domain.Enums
+
+@{
+    ViewBag.Title = "Editar Reserva";
+}
+
+<div class="card shadow mx-auto" style="max-width: 760px;">
+    <div class="card-header bg-primary text-white">
+        <h2 class="page-heading mb-0"><i class="fas fa-edit me-2"></i>Editar Reserva</h2>
+    </div>
+
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.IdReserva)
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            if (ViewBag.EsResidente == true)
+            {
+                @Html.HiddenFor(m => m.IdVivienda)
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.IdVivienda, "Vivienda", new { @class = "form-label d-block" })
+                    <input type="text" class="form-control" value="@ViewBag.ViviendaResidente" disabled="disabled" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.IdVivienda, "Vivienda", new { @class = "form-label d-block" })
+                    @Html.DropDownListFor(
+                        m => m.IdVivienda,
+                        (IEnumerable<SelectListItem>)ViewBag.Viviendas,
+                        "Seleccione una vivienda",
+                        new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
+                </div>
+            }
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.IdArea, "Área Común", new { @class = "form-label d-block" })
+                @Html.DropDownListFor(
+                    m => m.IdArea,
+                    (IEnumerable<SelectListItem>)ViewBag.AreasComunes,
+                    "Seleccione un área común",
+                    new { @class = "form-select" })
+                @Html.ValidationMessageFor(m => m.IdArea, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.FechaReserva, "Fecha de la reserva", new { @class = "form-label d-block" })
+                @Html.TextBoxFor(m => m.FechaReserva, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(m => m.FechaReserva, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    @Html.LabelFor(m => m.HoraInicio, "Hora de inicio", new { @class = "form-label d-block" })
+                    @Html.TextBoxFor(m => m.HoraInicio, @"{0:hh\:mm}", new { @class = "form-control", type = "time" })
+                    @Html.ValidationMessageFor(m => m.HoraInicio, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    @Html.LabelFor(m => m.HoraFin, "Hora de fin", new { @class = "form-label d-block" })
+                    @Html.TextBoxFor(m => m.HoraFin, @"{0:hh\:mm}", new { @class = "form-control", type = "time" })
+                    @Html.ValidationMessageFor(m => m.HoraFin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            if (ViewBag.EsResidente == true)
+            {
+                @Html.HiddenFor(m => m.Estado)
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.Estado, "Estado", new { @class = "form-label d-block" })
+                    <input type="text" class="form-control" value="@Model.Estado" disabled="disabled" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.Estado, new { @class = "form-label d-block" })
+                    @Html.DropDownListFor(
+                        m => m.Estado,
+                        new SelectList(Enum.GetValues(typeof(EstadoReserva))),
+                        new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.Estado, "", new { @class = "text-danger" })
+                </div>
+            }
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i>Actualizar
+                </button>
+
+                <a href="@Url.Action("Index")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Volver</a>
+            </div>
+        }
+    </div>
+</div>

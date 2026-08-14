@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace proyecto_programacion_avanzada
+namespace Condominio.Web
 {
     public class RouteConfig
     {
