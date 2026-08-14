@@ -180,9 +180,15 @@ namespace Condominio.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var dto = AutoMapperConfig.Mapper.Map<IncidenciaDto>(model);
+                var incidenciaDto = _incidenciaService.ObtenerPorId(model.IdIncidencia);
 
-                _incidenciaService.Actualizar(dto);
+                if (incidenciaDto == null)
+                    return HttpNotFound();
+
+                incidenciaDto.Estado = model.Estado;
+                incidenciaDto.Prioridad = model.Prioridad;
+
+                _incidenciaService.Actualizar(incidenciaDto);
 
                 TempData["Success"] = "Incidencia actualizada exitosamente.";
 
