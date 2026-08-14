@@ -5,6 +5,7 @@ using Condominio.Infrastructure.Repositories.Implementations;
 using Condominio.Application.Mappings;
 using Condominio.Application.Services.Implementations;
 using Condominio.Application.ViewModels.Visitante;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Condominio.Web.Controllers
     {
         private readonly VisitanteService _visitanteService;
         private readonly ViviendaService _viviendaService;
+        private readonly ResidenteRepository _residenteRepository;
 
         public VisitanteController()
         {
@@ -24,33 +26,78 @@ namespace Condominio.Web.Controllers
 
             var visitanteRepository = new VisitanteRepository(context);
             var viviendaRepository = new ViviendaRepository(context);
+            var residenteRepository = new ResidenteRepository(context);
 
             _visitanteService = new VisitanteService(visitanteRepository);
             _viviendaService = new ViviendaService(viviendaRepository);
+            _residenteRepository = residenteRepository;
         }
 
-        private void CargarCombos()
+        private bool EsResidente => User.IsInRole("Residente");
+
+        private int ObtenerIdViviendaResidente()
         {
-            ViewBag.Viviendas = _viviendaService
-                .obtenerTodos()
+            var userId = User.Identity.GetUserId<int>();
+
+            var residente = _residenteRepository.ObtenerPorIdUsuario(userId);
+
+            return residente?.IdVivienda ?? 0;
+        }
+
+        private void CargarCombos(int? idViviendaResidente = null)
+        {
+            IEnumerable<ViviendaDto> viviendas = _viviendaService.obtenerTodos();
+
+            if (idViviendaResidente.HasValue)
+            {
+                viviendas = viviendas.Where(v => v.IdVivienda == idViviendaResidente.Value).ToList();
+            }
+
+            ViewBag.Viviendas = viviendas
                 .Select(v => new SelectListItem
                 {
                     Value = v.IdVivienda.ToString(),
                     Text = "Bloque " + v.Bloque + " - Vivienda " + v.Numero
                 })
                 .ToList();
+
+            if (idViviendaResidente.HasValue)
+            {
+                var vivienda = viviendas.FirstOrDefault();
+
+                ViewBag.ViviendaResidente = vivienda == null
+                    ? null
+                    : "Bloque " + vivienda.Bloque + " - Vivienda " + vivienda.Numero;
+            }
         }
 
         // GET: Visitante
         public ActionResult Index(string filtro)
         {
-            var visitantesDto = filtro == "activos"
-                ? _visitanteService.ObtenerActivos()
-                : _visitanteService.ObtenerTodos();
+            IEnumerable<VisitanteDto> visitantesDto;
+
+            if (EsResidente)
+            {
+                var idVivienda = ObtenerIdViviendaResidente();
+
+                visitantesDto = _visitanteService.ObtenerHistorialPorVivienda(idVivienda);
+
+                if (filtro == "activos")
+                {
+                    visitantesDto = visitantesDto.Where(v => v.FechaSalida == null);
+                }
+            }
+            else
+            {
+                visitantesDto = filtro == "activos"
+                    ? _visitanteService.ObtenerActivos()
+                    : _visitanteService.ObtenerTodos();
+            }
 
             var visitantes = AutoMapperConfig.Mapper.Map<IEnumerable<VisitanteListViewModel>>(visitantesDto);
 
             ViewBag.Filtro = filtro;
+            ViewBag.EsResidente = EsResidente;
 
             return View(visitantes);
         }
@@ -63,6 +110,12 @@ namespace Condominio.Web.Controllers
             if (visitanteDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && visitanteDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para ver este visitante.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<VisitanteDetailsViewModel>(visitanteDto);
 
             return View(model);
@@ -71,9 +124,17 @@ namespace Condominio.Web.Controllers
         // GET: Visitante/Create
         public ActionResult Create()
         {
-            CargarCombos();
+            var idViviendaResidente = EsResidente ? ObtenerIdViviendaResidente() : (int?)null;
 
-            return View(new VisitanteIngresoViewModel { FechaIngreso = DateTime.Now });
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(idViviendaResidente);
+
+            return View(new VisitanteIngresoViewModel
+            {
+                FechaIngreso = DateTime.Now,
+                IdVivienda = idViviendaResidente ?? 0
+            });
         }
 
         // POST: Visitante/Create
@@ -81,6 +142,11 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VisitanteIngresoViewModel model)
         {
+            if (EsResidente)
+            {
+                model.IdVivienda = ObtenerIdViviendaResidente();
+            }
+
             if (ModelState.IsValid)
             {
                 if (_visitanteService.ExisteVisitanteActivoConIdentificacion(model.Identificacion))
@@ -108,7 +174,9 @@ namespace Condominio.Web.Controllers
                 }
             }
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? model.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -121,9 +189,17 @@ namespace Condominio.Web.Controllers
             if (visitanteDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && visitanteDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para editar este visitante.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<VisitanteEditViewModel>(visitanteDto);
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? visitanteDto.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -133,6 +209,19 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(VisitanteEditViewModel model)
         {
+            if (EsResidente)
+            {
+                var idViviendaResidente = ObtenerIdViviendaResidente();
+
+                if (model.IdVivienda != idViviendaResidente)
+                {
+                    TempData["Error"] = "No tiene permisos para editar este visitante.";
+                    return RedirectToAction("Index");
+                }
+
+                model.IdVivienda = idViviendaResidente;
+            }
+
             if (model.FechaSalida.HasValue && model.FechaSalida.Value < model.FechaIngreso)
             {
                 ModelState.AddModelError(
@@ -158,7 +247,9 @@ namespace Condominio.Web.Controllers
                 }
             }
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? model.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -170,6 +261,12 @@ namespace Condominio.Web.Controllers
 
             if (visitanteDto == null)
                 return HttpNotFound();
+
+            if (EsResidente && visitanteDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para registrar la salida de este visitante.";
+                return RedirectToAction("Index");
+            }
 
             if (visitanteDto.FechaSalida != null)
             {
@@ -187,6 +284,16 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RegistrarSalidaConfirmada(int id)
         {
+            var visitanteDto = _visitanteService.ObtenerPorId(id);
+
+            if (visitanteDto != null &&
+                EsResidente &&
+                visitanteDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para registrar la salida de este visitante.";
+                return RedirectToAction("Index");
+            }
+
             try
             {
                 _visitanteService.RegistrarSalida(id);
@@ -209,6 +316,12 @@ namespace Condominio.Web.Controllers
             if (visitanteDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && visitanteDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para eliminar este visitante.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<VisitanteDetailsViewModel>(visitanteDto);
 
             return View(model);
@@ -223,6 +336,12 @@ namespace Condominio.Web.Controllers
 
             if (visitante == null)
                 return HttpNotFound();
+
+            if (EsResidente && visitante.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para eliminar este visitante.";
+                return RedirectToAction("Index");
+            }
 
             _visitanteService.Eliminar(id);
 

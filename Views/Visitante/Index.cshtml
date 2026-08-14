@@ -78,11 +78,14 @@
                                             new { @class = "btn btn-sm btn-outline-warning btn-action fas fa-sign-out-alt", title = "Registrar salida" })
                                     }
 
-                                    @Html.ActionLink(" ", "Edit", new { id = item.IdVisitante },
-                                        new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })
+                                    @if (ViewBag.EsResidente != true)
+                                    {
+                                        @Html.ActionLink(" ", "Edit", new { id = item.IdVisitante },
+                                            new { @class = "btn btn-sm btn-outline-primary btn-action fas fa-pencil-alt", title = "Editar" })
 
-                                    @Html.ActionLink(" ", "Delete", new { id = item.IdVisitante },
-                                        new { @class = "btn btn-sm btn-outline-danger btn-action fas fa-trash-alt", title = "Eliminar" })
+                                        @Html.ActionLink(" ", "Delete", new { id = item.IdVisitante },
+                                            new { @class = "btn btn-sm btn-outline-danger btn-action fas fa-trash-alt", title = "Eliminar" })
+                                    }
                                 </td>
                             </tr>
                         }

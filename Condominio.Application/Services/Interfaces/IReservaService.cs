@@ -7,6 +7,8 @@ namespace Condominio.Application.Services.Interfaces
     {
         IEnumerable<ReservaDto> ObtenerTodos();
 
+        IEnumerable<ReservaDto> ObtenerPorVivienda(int idVivienda);
+
         ReservaDto ObtenerPorId(int id);
 
         void Agregar(ReservaDto reservaDto);

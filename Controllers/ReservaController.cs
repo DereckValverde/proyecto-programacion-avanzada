@@ -4,6 +4,7 @@ using Condominio.Infrastructure.Repositories.Implementations;
 using Condominio.Application.Mappings;
 using Condominio.Application.Services.Implementations;
 using Condominio.Application.ViewModels.Reserva;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,13 @@ using System.Web.Mvc;
 
 namespace Condominio.Web.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, Residente")]
     public class ReservaController : Controller
     {
         private readonly ReservaService _reservaService;
         private readonly ViviendaService _viviendaService;
         private readonly AreaComunService _areaComunService;
+        private readonly ResidenteRepository _residenteRepository;
 
         public ReservaController()
         {
@@ -25,22 +27,50 @@ namespace Condominio.Web.Controllers
             var reservaRepository = new ReservaRepository(context);
             var viviendaRepository = new ViviendaRepository(context);
             var areaComunRepository = new AreaComunRepository(context);
+            var residenteRepository = new ResidenteRepository(context);
 
             _reservaService = new ReservaService(reservaRepository);
             _viviendaService = new ViviendaService(viviendaRepository);
             _areaComunService = new AreaComunService(areaComunRepository);
+            _residenteRepository = residenteRepository;
         }
 
-        private void CargarCombos()
+        private bool EsResidente => User.IsInRole("Residente");
+
+        private int ObtenerIdViviendaResidente()
         {
-            ViewBag.Viviendas = _viviendaService
-                .obtenerTodos()
+            var userId = User.Identity.GetUserId<int>();
+
+            var residente = _residenteRepository.ObtenerPorIdUsuario(userId);
+
+            return residente?.IdVivienda ?? 0;
+        }
+
+        private void CargarCombos(int? idViviendaResidente = null)
+        {
+            IEnumerable<ViviendaDto> viviendas = _viviendaService.obtenerTodos();
+
+            if (idViviendaResidente.HasValue)
+            {
+                viviendas = viviendas.Where(v => v.IdVivienda == idViviendaResidente.Value).ToList();
+            }
+
+            ViewBag.Viviendas = viviendas
                 .Select(v => new SelectListItem
                 {
                     Value = v.IdVivienda.ToString(),
                     Text = "Bloque " + v.Bloque + " - Vivienda " + v.Numero
                 })
                 .ToList();
+
+            if (idViviendaResidente.HasValue)
+            {
+                var vivienda = viviendas.FirstOrDefault();
+
+                ViewBag.ViviendaResidente = vivienda == null
+                    ? null
+                    : "Bloque " + vivienda.Bloque + " - Vivienda " + vivienda.Numero;
+            }
 
             ViewBag.AreasComunes = _areaComunService
                 .ObtenerTodas()
@@ -55,9 +85,20 @@ namespace Condominio.Web.Controllers
         // GET: Reserva
         public ActionResult Index()
         {
-            var reservasDto = _reservaService.ObtenerTodos();
+            IEnumerable<ReservaDto> reservasDto;
+
+            if (EsResidente)
+            {
+                reservasDto = _reservaService.ObtenerPorVivienda(ObtenerIdViviendaResidente());
+            }
+            else
+            {
+                reservasDto = _reservaService.ObtenerTodos();
+            }
 
             var reservas = AutoMapperConfig.Mapper.Map<IEnumerable<ReservaListViewModel>>(reservasDto);
+
+            ViewBag.EsResidente = EsResidente;
 
             return View(reservas);
         }
@@ -70,6 +111,12 @@ namespace Condominio.Web.Controllers
             if (reservaDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && reservaDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para ver esta reserva.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<ReservaDetailsViewModel>(reservaDto);
 
             return View(model);
@@ -78,9 +125,13 @@ namespace Condominio.Web.Controllers
         // GET: Reserva/Create
         public ActionResult Create()
         {
-            CargarCombos();
+            var idViviendaResidente = EsResidente ? ObtenerIdViviendaResidente() : (int?)null;
 
-            return View(new ReservaCreateViewModel());
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(idViviendaResidente);
+
+            return View(new ReservaCreateViewModel { IdVivienda = idViviendaResidente ?? 0 });
         }
 
         // POST: Reserva/Create
@@ -88,6 +139,11 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ReservaCreateViewModel model)
         {
+            if (EsResidente)
+            {
+                model.IdVivienda = ObtenerIdViviendaResidente();
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -106,7 +162,9 @@ namespace Condominio.Web.Controllers
                 }
             }
 
-            CargarCombos();
+            CargarCombos(EsResidente ? model.IdVivienda : (int?)null);
+
+            ViewBag.EsResidente = EsResidente;
 
             return View(model);
         }
@@ -119,9 +177,17 @@ namespace Condominio.Web.Controllers
             if (reservaDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && reservaDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para editar esta reserva.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<ReservaEditViewModel>(reservaDto);
 
-            CargarCombos();
+            ViewBag.EsResidente = EsResidente;
+
+            CargarCombos(EsResidente ? reservaDto.IdVivienda : (int?)null);
 
             return View(model);
         }
@@ -131,6 +197,19 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ReservaEditViewModel model)
         {
+            if (EsResidente)
+            {
+                var idViviendaResidente = ObtenerIdViviendaResidente();
+
+                if (model.IdVivienda != idViviendaResidente)
+                {
+                    TempData["Error"] = "No tiene permisos para editar esta reserva.";
+                    return RedirectToAction("Index");
+                }
+
+                model.IdVivienda = idViviendaResidente;
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -149,7 +228,9 @@ namespace Condominio.Web.Controllers
                 }
             }
 
-            CargarCombos();
+            CargarCombos(EsResidente ? model.IdVivienda : (int?)null);
+
+            ViewBag.EsResidente = EsResidente;
 
             return View(model);
         }
@@ -162,6 +243,12 @@ namespace Condominio.Web.Controllers
             if (reservaDto == null)
                 return HttpNotFound();
 
+            if (EsResidente && reservaDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para eliminar esta reserva.";
+                return RedirectToAction("Index");
+            }
+
             var model = AutoMapperConfig.Mapper.Map<ReservaDetailsViewModel>(reservaDto);
 
             return View(model);
@@ -172,6 +259,17 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var reservaDto = _reservaService.ObtenerPorId(id);
+
+            if (reservaDto == null)
+                return HttpNotFound();
+
+            if (EsResidente && reservaDto.IdVivienda != ObtenerIdViviendaResidente())
+            {
+                TempData["Error"] = "No tiene permisos para eliminar esta reserva.";
+                return RedirectToAction("Index");
+            }
+
             _reservaService.Eliminar(id);
 
             TempData["Success"] = "Reserva eliminada exitosamente.";

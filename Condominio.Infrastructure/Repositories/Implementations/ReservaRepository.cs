@@ -27,6 +27,16 @@ namespace Condominio.Infrastructure.Repositories.Implementations
                 .ToList();
         }
 
+        public IEnumerable<Reserva> ObtenerPorVivienda(int idVivienda)
+        {
+            return _context.Reservas
+                .Include(r => r.Vivienda)
+                .Include(r => r.AreaComun)
+                .Where(r => r.IdVivienda == idVivienda)
+                .OrderByDescending(r => r.FechaReserva)
+                .ToList();
+        }
+
         public Reserva ObtenerPorId(int id)
         {
             return _context.Reservas

@@ -165,6 +165,7 @@
     <Compile Include="App_Start\FluentValidationConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IncidenciaController.cs" />
     <Compile Include="Controllers\NoticiaController.cs" />
     <Compile Include="Controllers\PagoController.cs" />
     <Compile Include="Controllers\ReservaController.cs" />
@@ -266,6 +267,11 @@
     <Content Include="Views\Reserva\Edit.cshtml" />
     <Content Include="Views\Reserva\Details.cshtml" />
     <Content Include="Views\Reserva\Delete.cshtml" />
+    <Content Include="Views\Incidencia\Index.cshtml" />
+    <Content Include="Views\Incidencia\Create.cshtml" />
+    <Content Include="Views\Incidencia\Details.cshtml" />
+    <Content Include="Views\Incidencia\Edit.cshtml" />
+    <Content Include="Views\Incidencia\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,7 @@ using Condominio.Application.ViewModels.Usuario;
 using Condominio.Application.ViewModels.Vivienda;
 using Condominio.Application.ViewModels.Visitante;
 using Condominio.Application.ViewModels.Reserva;
+using Condominio.Application.ViewModels.Incidencia;
 
 namespace Condominio.Application.Mappings
 {
@@ -189,6 +190,26 @@ namespace Condominio.Application.Mappings
                 .ReverseMap();
 
             CreateMap<Incidencia, IncidenciaDto>()
+                .ForMember(dest => dest.NombreResidente,
+                    opt => opt.MapFrom(src => src.Residente.Nombre))
+                .ForMember(dest => dest.NombreVivienda,
+                    opt => opt.MapFrom(src =>
+                        "Bloque " + src.Residente.Vivienda.Bloque +
+                        " - Vivienda " + src.Residente.Vivienda.Numero));
+
+            CreateMap<IncidenciaDto, Incidencia>()
+                .ForMember(dest => dest.Residente, opt => opt.Ignore());
+
+            CreateMap<IncidenciaDto, IncidenciaCreateViewModel>()
+                .ReverseMap();
+
+            CreateMap<IncidenciaDto, IncidenciaEditViewModel>()
+                .ReverseMap();
+
+            CreateMap<IncidenciaDto, IncidenciaListViewModel>()
+                .ReverseMap();
+
+            CreateMap<IncidenciaDto, IncidenciaDetailsViewModel>()
                 .ReverseMap();
 
             CreateMap<Noticia, NoticiaDto>()

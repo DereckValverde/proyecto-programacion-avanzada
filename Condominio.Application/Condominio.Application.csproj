@@ -67,6 +67,7 @@
     <Compile Include="Mappings\MappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interfaces\IAreaComunRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IIncidenciaRepository.cs" />
     <Compile Include="Repositories\Interfaces\INoticiaRepository.cs" />
     <Compile Include="Repositories\Interfaces\IPagoRepository.cs" />
     <Compile Include="Repositories\Interfaces\IReservaRepository.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Repositories\Interfaces\IVisitanteRepository.cs" />
     <Compile Include="Repositories\Interfaces\IViviendaRepository.cs" />
     <Compile Include="Services\Implementations\AreaComunService.cs" />
+    <Compile Include="Services\Implementations\IncidenciaService.cs" />
     <Compile Include="Services\Implementations\NoticiaService.cs" />
     <Compile Include="Services\Implementations\PagoService.cs" />
     <Compile Include="Services\Implementations\ReservaService.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Services\Implementations\VisitanteService.cs" />
     <Compile Include="Services\Implementations\ViviendaService.cs" />
     <Compile Include="Services\Interfaces\IAreaComunService.cs" />
+    <Compile Include="Services\Interfaces\IIncidenciaService.cs" />
     <Compile Include="Services\Interfaces\INoticiaService.cs" />
     <Compile Include="Services\Interfaces\IPagoService.cs" />
     <Compile Include="Services\Interfaces\IReservaService.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Services\Interfaces\IVisitanteService.cs" />
     <Compile Include="Services\Interfaces\IViviendaService.cs" />
     <Compile Include="Validators\LoginViewModelValidator.cs" />
+    <Compile Include="Validators\IncidenciaCreateViewModelValidator.cs" />
     <Compile Include="Validators\NoticiaCreateViewModelValidator.cs" />
     <Compile Include="Validators\NoticiaEditViewModelValidator.cs" />
     <Compile Include="Validators\PagoCreateViewModelValidator.cs" />
@@ -100,6 +104,10 @@
     <Compile Include="Validators\UsuarioCreateViewModelValidator.cs" />
     <Compile Include="Validators\UsuarioEditViewModelValidator.cs" />
     <Compile Include="ViewModels\HomeIndexViewModel.cs" />
+    <Compile Include="ViewModels\IncidenciaCreateViewModel.cs" />
+    <Compile Include="ViewModels\IncidenciaDetailsViewModel.cs" />
+    <Compile Include="ViewModels\IncidenciaEditViewModel.cs" />
+    <Compile Include="ViewModels\IncidenciaListViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\NoticiaCreateViewModel.cs" />
     <Compile Include="ViewModels\NoticiaDetailsViewModel.cs" />

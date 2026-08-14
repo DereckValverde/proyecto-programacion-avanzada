@@ -19,15 +19,27 @@
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="form-group mb-3">
-                @Html.LabelFor(m => m.IdVivienda, "Vivienda", new { @class = "form-label d-block" })
-                @Html.DropDownListFor(
-                    m => m.IdVivienda,
-                    (IEnumerable<SelectListItem>)ViewBag.Viviendas,
-                    "Seleccione una vivienda",
-                    new { @class = "form-select" })
-                @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
-            </div>
+            if (ViewBag.EsResidente == true)
+            {
+                @Html.HiddenFor(m => m.IdVivienda)
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.IdVivienda, "Vivienda", new { @class = "form-label d-block" })
+                    <input type="text" class="form-control" value="@ViewBag.ViviendaResidente" disabled="disabled" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.IdVivienda, "Vivienda", new { @class = "form-label d-block" })
+                    @Html.DropDownListFor(
+                        m => m.IdVivienda,
+                        (IEnumerable<SelectListItem>)ViewBag.Viviendas,
+                        "Seleccione una vivienda",
+                        new { @class = "form-select" })
+                    @Html.ValidationMessageFor(m => m.IdVivienda, "", new { @class = "text-danger" })
+                </div>
+            }
 
             <div class="form-group mb-3">
                 @Html.LabelFor(m => m.Periodo, new { @class = "form-label d-block" })

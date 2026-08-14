@@ -25,6 +25,13 @@ namespace Condominio.Application.Services.Implementations
             return reservas.Select(r => AutoMapperConfig.Mapper.Map<ReservaDto>(r));
         }
 
+        public IEnumerable<ReservaDto> ObtenerPorVivienda(int idVivienda)
+        {
+            var reservas = _reservaRepository.ObtenerPorVivienda(idVivienda);
+
+            return reservas.Select(r => AutoMapperConfig.Mapper.Map<ReservaDto>(r));
+        }
+
         public ReservaDto ObtenerPorId(int id)
         {
             var reserva = _reservaRepository.ObtenerPorId(id);
