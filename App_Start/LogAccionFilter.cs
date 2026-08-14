@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using Serilog;
 
@@ -15,13 +14,10 @@ namespace Condominio.Web.App_Start
                 var usuario = filterContext.HttpContext.User.Identity.Name ?? "Anónimo";
                 var controlador = filterContext.Controller.GetType().Name;
                 var accion = filterContext.ActionDescriptor.ActionName;
-                var parametros = string.Join(", ", filterContext.ActionParameters
-                    .Where(p => p.Value == null || p.Value is string || p.Value.GetType().IsValueType)
-                    .Select(p => p.Key + "=" + p.Value));
 
                 Log.Information(
-                    "Acción {Verbo} {Controlador}/{Accion} - Usuario: {Usuario} - IP: {Ip} - Parámetros: {Parametros}",
-                    solicitud.HttpMethod, controlador, accion, usuario, solicitud.UserHostAddress, parametros);
+                    "Acción {Verbo} {Controlador}/{Accion} - Usuario: {Usuario}",
+                    solicitud.HttpMethod, controlador, accion, usuario);
             }
             catch (Exception ex)
             {

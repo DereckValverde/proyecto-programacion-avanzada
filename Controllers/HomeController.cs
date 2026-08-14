@@ -80,8 +80,8 @@ namespace Condominio.Web.Controllers
 
             if (usuario == null || usuario.Estado != EstadoGeneral.Activo)
             {
-                Log.Warning("Intento de inicio de sesión fallido - Correo: {Correo} - IP: {Ip} - Motivo: correo no encontrado o cuenta inactiva",
-                    model.Correo, Request.UserHostAddress);
+                Log.Warning("Intento de inicio de sesión fallido - Correo: {Correo} - Motivo: correo no encontrado o cuenta inactiva",
+                    model.Correo);
 
                 ModelState.AddModelError(string.Empty, "Correo electrónico o contraseña incorrectos.");
                 return View("Index", CargarModeloIndex(model));
@@ -111,8 +111,8 @@ namespace Condominio.Web.Controllers
 
             if (verificacion == PasswordVerificationResult.Failed)
             {
-                Log.Warning("Intento de inicio de sesión fallido - Correo: {Correo} - IP: {Ip} - Motivo: contraseña incorrecta",
-                    model.Correo, Request.UserHostAddress);
+                Log.Warning("Intento de inicio de sesión fallido - Correo: {Correo} - Motivo: contraseña incorrecta",
+                    model.Correo);
 
                 ModelState.AddModelError(string.Empty, "Correo electrónico o contraseña incorrectos.");
                 return View("Index", CargarModeloIndex(model));
@@ -141,8 +141,8 @@ namespace Condominio.Web.Controllers
                 IsPersistent = false
             }, identity);
 
-            Log.Information("Inicio de sesión exitoso - Usuario: {Correo} - Rol: {Rol} - IP: {Ip}",
-                model.Correo, rol, Request.UserHostAddress);
+            Log.Information("Inicio de sesión exitoso - Usuario: {Correo} - Rol: {Rol}",
+                model.Correo, rol);
 
             return RedirectToAction("Index");
         }
@@ -151,8 +151,8 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
-            Log.Information("Cierre de sesión - Usuario: {Usuario} - IP: {Ip}",
-                User.Identity.Name, Request.UserHostAddress);
+            Log.Information("Cierre de sesión - Usuario: {Usuario}",
+                User.Identity.Name);
 
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
