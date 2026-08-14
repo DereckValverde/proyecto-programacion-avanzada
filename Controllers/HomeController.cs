@@ -16,6 +16,7 @@ using Condominio.Domain.Noticias;
 using Condominio.Domain.Shared;
 using Condominio.Infrastructure.DbContexts;
 using Condominio.Infrastructure.Repositories;
+using Serilog;
 
 namespace Condominio.Web.Controllers
 {
@@ -79,6 +80,9 @@ namespace Condominio.Web.Controllers
 
             if (usuario == null || usuario.Estado != EstadoGeneral.Activo)
             {
+                Log.Warning("Intento de inicio de sesión fallido - Correo: {Correo} - IP: {Ip} - Motivo: correo no encontrado o cuenta inactiva",
+                    model.Correo, Request.UserHostAddress);
+
                 ModelState.AddModelError(string.Empty, "Correo electrónico o contraseña incorrectos.");
                 return View("Index", CargarModeloIndex(model));
             }
@@ -107,6 +111,9 @@ namespace Condominio.Web.Controllers
 
             if (verificacion == PasswordVerificationResult.Failed)
             {
+                Log.Warning("Intento de inicio de sesión fallido - Correo: {Correo} - IP: {Ip} - Motivo: contraseña incorrecta",
+                    model.Correo, Request.UserHostAddress);
+
                 ModelState.AddModelError(string.Empty, "Correo electrónico o contraseña incorrectos.");
                 return View("Index", CargarModeloIndex(model));
             }
@@ -134,6 +141,9 @@ namespace Condominio.Web.Controllers
                 IsPersistent = false
             }, identity);
 
+            Log.Information("Inicio de sesión exitoso - Usuario: {Correo} - Rol: {Rol} - IP: {Ip}",
+                model.Correo, rol, Request.UserHostAddress);
+
             return RedirectToAction("Index");
         }
 
@@ -141,6 +151,9 @@ namespace Condominio.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
+            Log.Information("Cierre de sesión - Usuario: {Usuario} - IP: {Ip}",
+                User.Identity.Name, Request.UserHostAddress);
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
             return RedirectToAction("Index");
